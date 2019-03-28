@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -446,7 +446,7 @@ PrefabInstance:
         type: 3}
       propertyPath: PetModel
       value: 
-      objectReference: {fileID: 3740621374383974500, guid: 14199ab9da0d5f644996f7a88561548c,
+      objectReference: {fileID: 6915919839442708523, guid: a48f39c0e2fa03048b541dce29956309,
         type: 3}
     - target: {fileID: 114023943728099930, guid: 6f2f7e5a11d37ba49b6864c9da901e95,
         type: 3}
