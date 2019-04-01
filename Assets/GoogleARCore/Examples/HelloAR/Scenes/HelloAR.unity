@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -270,9 +270,9 @@ MonoBehaviour:
   FirstPersonCamera: {fileID: 896679035}
   DetectedPlanePrefab: {fileID: 1654175882956584, guid: 6a35c744e5010405c847fad90282d2be,
     type: 3}
-  AndyPlanePrefab: {fileID: 3740621374384010244, guid: 14199ab9da0d5f644996f7a88561548c,
+  AndyPlanePrefab: {fileID: 6915919839442285579, guid: a48f39c0e2fa03048b541dce29956309,
     type: 3}
-  AndyPointPrefab: {fileID: 3740621374384010244, guid: 14199ab9da0d5f644996f7a88561548c,
+  AndyPointPrefab: {fileID: 6915919839442285579, guid: a48f39c0e2fa03048b541dce29956309,
     type: 3}
   petControls: {fileID: 62040535}
 --- !u!1001 &688001843
