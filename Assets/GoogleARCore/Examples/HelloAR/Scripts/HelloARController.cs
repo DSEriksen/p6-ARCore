@@ -69,7 +69,7 @@ namespace GoogleARCore.Examples.HelloAR
         /// The Unity Update() method.
         /// </summary>
 
-        public PetControls petControls;
+        //public PetControls petControls;
         bool spawned = false;
         public void Update()
         {
@@ -124,8 +124,8 @@ namespace GoogleARCore.Examples.HelloAR
                     // Make Andy model a child of the anchor.
                     andyObject.transform.parent = anchor.transform;
 
-                    petControls.PetModel = andyObject.transform;
-                    petControls.gameObject.SetActive(true);
+                    //petControls.PetModel = andyObject.transform;
+                   // petControls.gameObject.SetActive(true);
                 }
 
  
