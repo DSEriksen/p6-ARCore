@@ -30,66 +30,64 @@ namespace GoogleARCore.Examples.HelloAR
     using Input = InstantPreviewInput;
 #endif
 
-    /// <summary>
+
     /// Controls the HelloAR example.
-    /// </summary>
     public class ARCoreController : MonoBehaviour
     {
-        /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR background).
-        /// </summary>
         public Camera FirstPersonCamera;
 
-        /// <summary>
+
         /// A prefab for tracking and visualizing detected planes.
-        /// </summary>
         public GameObject DetectedPlanePrefab;
 
-        /// <summary>
         /// A model to place when a raycast from a user touch hits a plane.
-        /// </summary>
         public GameObject petPlanePrefab;
 
-        /// <summary>
         /// A model to place when a raycast from a user touch hits a feature point.
-        /// </summary>
         public GameObject petPointPrefab;
 
-        /// <summary>
         /// The rotation in degrees need to apply to model when the Andy model is placed.
-        /// </summary>
         private const float k_ModelRotation = 180.0f;
 
-        /// <summary>
         /// True if the app is in the process of quitting due to an ARCore connection error, otherwise false.
-        /// </summary>
         private bool m_IsQuitting = false;
 
-        /// <summary>
-        /// The Unity Update() method.
-        /// </summary>
-
-        bool spawned = false;
+        //Following are custom variables unique to ARCoreP6
+        public bool canSpawn;
         private GameObject petModel;
         private Anchor anchor;
 
+        public void Start(){
+            canSpawn = true;
+            Debug.Log("start check - canSpawn: "+canSpawn);
+        }
         public void Update()
         {
             _UpdateApplicationLifecycle();
 
-            if (spawned == false){
+            if (canSpawn)
+            {
                 SpawnPet();
+            }
+            else{
+                _UpdateApplicationLifecycle();
             }
         }
 
-        public void KillPet(){
-            anchor.SetActive(false);
-            spawned = false;
-            Debug.Log("tried to kill anchor (pet)");
-            Debug.Log("spawned: "+ spawned);
+        public void KillPet()
+        {
+
         }
 
-        private void SpawnPet(){
+        public void SwitchCanSpawn()
+        {
+            Debug.Log("switch check - canSpawn: " + canSpawn);
+        }
+
+        private void SpawnPet()
+        {
+
             // If the player has not touched the screen, we are done with this update.
             Touch touch;
             if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
@@ -102,11 +100,11 @@ namespace GoogleARCore.Examples.HelloAR
             TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
                 TrackableHitFlags.FeaturePointWithSurfaceNormal;
 
-            if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit) && spawned == false)
+            if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
             {
                 // Use hit pose and camera pose to check if hittest is from the
                 // back of the plane, if it is, no need to create the anchor.
-                
+
                 if ((hit.Trackable is DetectedPlane) &&
                     Vector3.Dot(FirstPersonCamera.transform.position - hit.Pose.position,
                         hit.Pose.rotation * Vector3.up) < 0)
@@ -115,6 +113,7 @@ namespace GoogleARCore.Examples.HelloAR
                 }
                 else
                 {
+
                     // Choose the Andy model for the Trackable that got hit.
                     GameObject prefab;
                     if (hit.Trackable is FeaturePoint)
@@ -134,21 +133,20 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Create an anchor to allow ARCore to track the hitpoint as understanding of the physical
                     // world evolves.
-                    anchor = (Anchor) hit.Trackable.CreateAnchor(hit.Pose);
+                    anchor = (Anchor)hit.Trackable.CreateAnchor(hit.Pose);
 
                     // Make Andy model a child of the anchor.
                     petModel.transform.parent = anchor.transform;
 
-                    spawned = true;
-                    Debug.Log("Spawned pet: " + spawned);
-                    
+                    Debug.Log("touch check - canSpawn: "+canSpawn);
+
                 }
             }
         }
 
-        /// <summary>
+
         /// Check and update the application lifecycle.
-        /// </summary>
+
         private void _UpdateApplicationLifecycle()
         {
             // Exit the app when the 'back' button is pressed.
@@ -188,17 +186,17 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        /// <summary>
+
         /// Actually quit the application.
-        /// </summary>
+
         private void _DoQuit()
         {
             Application.Quit();
         }
 
-        /// <summary>
+
         /// Show an Android toast message.
-        /// </summary>
+
         /// <param name="message">Message string to show in the toast.</param>
         private void _ShowAndroidToastMessage(string message)
         {
