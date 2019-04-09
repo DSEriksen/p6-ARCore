@@ -54,7 +54,7 @@ namespace GoogleARCore.Examples.HelloAR
         private bool m_IsQuitting = false;
 
         //Following are custom variables unique to ARCoreP6
-        public bool canSpawn;
+        [HideInInspector] public bool canSpawn;
         private GameObject petModel;
         private Anchor anchor;
 
@@ -77,12 +77,12 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void KillPet()
         {
-
+            Debug.Log("Attempted to kill pet");
         }
 
-        public void SwitchCanSpawn()
+        public void checkCanSpawn()
         {
-            Debug.Log("switch check - canSpawn: " + canSpawn);
+            Debug.Log("bool check - canSpawn: " + canSpawn);
         }
 
         private void SpawnPet()
