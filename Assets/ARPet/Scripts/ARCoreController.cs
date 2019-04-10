@@ -53,15 +53,26 @@ namespace GoogleARCore.Examples.HelloAR
         /// True if the app is in the process of quitting due to an ARCore connection error, otherwise false.
         private bool m_IsQuitting = false;
 
-        //Following are custom variables unique to ARCoreP6
-        [HideInInspector] public bool canSpawn;
+        //---Following are custom variables unique to ARCoreP6---
+        private bool canSpawn;
         private GameObject petModel;
         private Anchor anchor;
 
-        public void Start(){
+        public GameObject statsPrefab;
+        private GameObject statsAnchor;
+
+        private GameObject statsHunger;
+        private GameObject statsHydration;
+
+        public GameObject UI;
+
+        public void Start()
+        {
             canSpawn = true;
-            Debug.Log("start check - canSpawn: "+canSpawn);
+            Debug.Log("start check - canSpawn: " + canSpawn);
+            UI.SetActive(false);
         }
+
         public void Update()
         {
             _UpdateApplicationLifecycle();
@@ -70,19 +81,36 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 SpawnPet();
             }
-            else{
+            else
+            {
                 _UpdateApplicationLifecycle();
+            }
+
+            statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
+
+
+        }
+
+        public void ToggleStats()
+        {
+            if (statsAnchor.activeSelf)
+            {
+                statsAnchor.SetActive(false);
+            }
+            else
+            {
+                statsAnchor.SetActive(true);
             }
         }
 
-        public void KillPet()
+        public void FeedPet()
         {
-            Debug.Log("Attempted to kill pet");
+            statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
         }
 
-        public void checkCanSpawn()
+        public void HydratePet()
         {
-            Debug.Log("bool check - canSpawn: " + canSpawn);
+            statsHydration.transform.localScale += new Vector3(0.1f, 0f, 0f);
         }
 
         private void SpawnPet()
@@ -127,6 +155,10 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Instantiate Andy model at the hit pose.
                     petModel = (GameObject)Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
+                    statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
+
+                    statsHunger = GameObject.FindGameObjectWithTag("statsHunger");
+                    statsHydration = GameObject.FindGameObjectWithTag("statsHydration");
 
                     // Compensate for the hitPose rotation facing away from the raycast (i.e. camera).
                     petModel.transform.Rotate(0, k_ModelRotation, 0, Space.Self);
@@ -137,13 +169,32 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Make Andy model a child of the anchor.
                     petModel.transform.parent = anchor.transform;
+                    statsAnchor.transform.parent = anchor.transform;
+                    statsAnchor.transform.Translate(0.30f, 0.60f, 0.35f);
 
-                    Debug.Log("touch check - canSpawn: "+canSpawn);
+                    UI.SetActive(true);
+                    statsHunger.transform.localScale -= new Vector3(0.5f, 0f, 0f);
 
+                    canSpawn = false;
+
+                    Debug.Log("touch check - canSpawn: " + canSpawn);
                 }
             }
         }
 
+        /* ---wip---
+        public void KillPet()
+        {   
+            canSpawn = false;
+            Debug.Log("Attempted to kill pet. canSpawn: "+canSpawn);
+        }
+        */
+
+
+
+
+
+        //---ARCore specific functions---
 
         /// Check and update the application lifecycle.
 

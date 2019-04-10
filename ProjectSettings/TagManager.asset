@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ManipulationSystem
   - Pet
+  - statsHunger
+  - statsHydration
   layers:
   - Default
   - TransparentFX
