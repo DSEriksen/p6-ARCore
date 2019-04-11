@@ -61,6 +61,7 @@ namespace GoogleARCore.Examples.HelloAR
         public GameObject statsPrefab;
         private GameObject statsAnchor;
 
+        private bool statsActive;
         private GameObject statsHunger;
         private GameObject statsHydration;
 
@@ -69,7 +70,7 @@ namespace GoogleARCore.Examples.HelloAR
         public void Start()
         {
             canSpawn = true;
-            Debug.Log("start check - canSpawn: " + canSpawn);
+            statsActive = false;
             UI.SetActive(false);
         }
 
@@ -81,12 +82,8 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 SpawnPet();
             }
-            else
-            {
-                _UpdateApplicationLifecycle();
-            }
 
-            statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
+            if (statsActive) statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
 
 
         }
@@ -176,8 +173,7 @@ namespace GoogleARCore.Examples.HelloAR
                     statsHunger.transform.localScale -= new Vector3(0.5f, 0f, 0f);
 
                     canSpawn = false;
-
-                    Debug.Log("touch check - canSpawn: " + canSpawn);
+                    statsActive = true;
                 }
             }
         }
