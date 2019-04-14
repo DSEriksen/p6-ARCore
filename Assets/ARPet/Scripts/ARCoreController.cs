@@ -62,8 +62,12 @@ namespace GoogleARCore.Examples.HelloAR
         private GameObject statsAnchor;
 
         private bool statsActive;
-        private GameObject statsHunger;
-        private GameObject statsHydration;
+        private GameObject statsHunger, statsHydration;
+
+        private bool hidingUI;
+        private bool animateUI;
+        private float uiUp, uiDown;
+        public GameObject HideShowUI;
 
         public GameObject UI;
 
@@ -72,6 +76,11 @@ namespace GoogleARCore.Examples.HelloAR
             canSpawn = true;
             statsActive = false;
             UI.SetActive(false);
+            uiUp = 300f;
+            uiDown = 30f;
+            //HideShowUI = GameObject.FindGameObjectWithTag("HideShowUI");
+            animateUI = false;
+            hidingUI = false;
         }
 
         public void Update()
@@ -85,7 +94,30 @@ namespace GoogleARCore.Examples.HelloAR
 
             if (statsActive) statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
 
+            if (animateUI && !hidingUI)
+            {
+                HideShowUI.transform.Translate(new Vector3(0, -10f, 0), Space.World);
+                if (HideShowUI.transform.position.y <= uiDown)
+                {
+                    animateUI = false;
+                    hidingUI = true;
+                }
+                Debug.Log(HideShowUI.transform.position);
+            }
+            if (animateUI && hidingUI)
+            {
+                HideShowUI.transform.Translate(new Vector3(0, 10f, 0));
+                if (HideShowUI.transform.position.y >= uiUp)
+                {
+                    animateUI = false;
+                    hidingUI = false;
+                }
+            }
+        }
 
+        public void ToggleUI()
+        {
+            animateUI = true;
         }
 
         public void ToggleStats()
@@ -177,16 +209,6 @@ namespace GoogleARCore.Examples.HelloAR
                 }
             }
         }
-
-        /* ---wip---
-        public void KillPet()
-        {   
-            canSpawn = false;
-            Debug.Log("Attempted to kill pet. canSpawn: "+canSpawn);
-        }
-        */
-
-
 
 
 

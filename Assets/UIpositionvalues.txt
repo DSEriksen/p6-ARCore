@@ -1,0 +1,6 @@
+Button-HideShow:
+	Up:
+	y: -320
+
+	Down:
+	y: -450
