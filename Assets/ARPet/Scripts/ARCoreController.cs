@@ -71,6 +71,9 @@ namespace GoogleARCore.Examples.HelloAR
         public GameObject UIHandle;
         public GameObject UI;
 
+        //Animation variables
+        private Animator anim;
+
         public void Start()
         {
             canSpawn = true;
@@ -81,6 +84,7 @@ namespace GoogleARCore.Examples.HelloAR
             animSpeed = 20f;
             animateUI = false;
             hidingUI = false;
+            anim = GetComponent<Animator>();
         }
 
         public void Update()
@@ -134,11 +138,23 @@ namespace GoogleARCore.Examples.HelloAR
         public void FeedPet()
         {
             statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
+            startRunning();
         }
 
         public void HydratePet()
         {
             statsHydration.transform.localScale += new Vector3(0.1f, 0f, 0f);
+            stopRunning();
+        }
+
+        public void startRunning()
+        {
+            anim.SetBool("isRunning", true);
+        }
+
+        public void stopRunning()
+        {
+            anim.SetBool("isRunning", false);
         }
 
         private void SpawnPet()
