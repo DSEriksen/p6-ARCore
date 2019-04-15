@@ -54,11 +54,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\ARPet\Scripts\ARCoreController.cs" />
-     <Compile Include="Assets\ARPet\Virtual Joystick Pack\Example\PlayerExample.cs" />
-     <Compile Include="Assets\ARPet\Virtual Joystick Pack\Scripts\Base\Joystick.cs" />
-     <Compile Include="Assets\ARPet\Virtual Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
-     <Compile Include="Assets\ARPet\Virtual Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
-     <Compile Include="Assets\ARPet\Virtual Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
      <Compile Include="Assets\GoogleARCore\Examples\AugmentedFaces\Scripts\ARCoreAugmentedFaceMeshFilter.cs" />
      <Compile Include="Assets\GoogleARCore\Examples\AugmentedFaces\Scripts\ARCoreAugmentedFaceRig.cs" />
      <Compile Include="Assets\GoogleARCore\Examples\AugmentedFaces\Scripts\AugmentedFacesExampleController.cs" />

@@ -58,17 +58,17 @@ namespace GoogleARCore.Examples.HelloAR
         private GameObject petModel;
         private Anchor anchor;
 
+        //Stats variables
         public GameObject statsPrefab;
         private GameObject statsAnchor;
-
         private bool statsActive;
         private GameObject statsHunger, statsHydration;
 
+        //UI variables
         private bool hidingUI;
         private bool animateUI;
-        private float uiUp, uiDown;
-        public GameObject HideShowUI;
-
+        private float uiUp, uiDown, animSpeed;
+        public GameObject UIHandle;
         public GameObject UI;
 
         public void Start()
@@ -76,9 +76,9 @@ namespace GoogleARCore.Examples.HelloAR
             canSpawn = true;
             statsActive = false;
             UI.SetActive(false);
-            uiUp = 300f;
-            uiDown = 30f;
-            //HideShowUI = GameObject.FindGameObjectWithTag("HideShowUI");
+            uiUp = -745f;
+            uiDown = -995f;
+            animSpeed = 20f;
             animateUI = false;
             hidingUI = false;
         }
@@ -96,18 +96,17 @@ namespace GoogleARCore.Examples.HelloAR
 
             if (animateUI && !hidingUI)
             {
-                HideShowUI.transform.Translate(new Vector3(0, -10f, 0), Space.World);
-                if (HideShowUI.transform.position.y <= uiDown)
+                UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0), Space.World);
+                if (UIHandle.transform.localPosition.y <= uiDown)
                 {
                     animateUI = false;
                     hidingUI = true;
                 }
-                Debug.Log(HideShowUI.transform.position);
             }
             if (animateUI && hidingUI)
             {
-                HideShowUI.transform.Translate(new Vector3(0, 10f, 0));
-                if (HideShowUI.transform.position.y >= uiUp)
+                UIHandle.transform.Translate(new Vector3(0, animSpeed, 0));
+                if (UIHandle.transform.localPosition.y >= uiUp)
                 {
                     animateUI = false;
                     hidingUI = false;
