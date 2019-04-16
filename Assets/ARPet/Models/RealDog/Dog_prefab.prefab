@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 6915919839442708523}
   m_Layer: 0
   m_Name: Dog_prefab
-  m_TagString: Pet
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

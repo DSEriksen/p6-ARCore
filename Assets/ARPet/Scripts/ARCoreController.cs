@@ -72,7 +72,10 @@ namespace GoogleARCore.Examples.HelloAR
         public GameObject UI;
 
         //Animation variables
+        private GameObject petAnimator;
         private Animator anim;
+        public bool isRunning;
+
 
         public void Start()
         {
@@ -84,8 +87,8 @@ namespace GoogleARCore.Examples.HelloAR
             animSpeed = 20f;
             animateUI = false;
             hidingUI = false;
-            anim = GetComponent<Animator>();
-        }
+            
+            }
 
         public void Update()
         {
@@ -138,13 +141,15 @@ namespace GoogleARCore.Examples.HelloAR
         public void FeedPet()
         {
             statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
-            startRunning();
+            anim.SetBool("isRunning", true);
+            Debug.Log(anim.GetBool("isRunning"));
         }
 
         public void HydratePet()
         {
             statsHydration.transform.localScale += new Vector3(0.1f, 0f, 0f);
-            stopRunning();
+            anim.SetBool("isRunning", false);
+            Debug.Log(anim.GetBool("isRunning"));
         }
 
         public void startRunning()
@@ -200,6 +205,10 @@ namespace GoogleARCore.Examples.HelloAR
                     // Instantiate Andy model at the hit pose.
                     petModel = (GameObject)Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
                     statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
+
+                    petAnimator = GameObject.FindGameObjectWithTag("Pet");
+                    anim = petAnimator.GetComponent<Animator>();
+                    anim.SetBool("isRunning", false);
 
                     statsHunger = GameObject.FindGameObjectWithTag("statsHunger");
                     statsHydration = GameObject.FindGameObjectWithTag("statsHydration");
