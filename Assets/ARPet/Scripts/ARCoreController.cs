@@ -65,30 +65,40 @@ namespace GoogleARCore.Examples.HelloAR
         private GameObject statsHunger, statsHydration;
 
         //UI variables
-        private bool hidingUI;
-        private bool animateUI;
-        private float uiUp, uiDown, animSpeed;
+        private bool hidingUI, animateHandle, fPaneActive, animateFPane, animateMPane;
+        private bool switchingToFPane, switchingToMPane;
+        private float uiHandleUp, uiHandleDown, uiMPaneUp, uiMPaneDown, uiFPaneUp, uiFPaneDown, animSpeed;
         public GameObject UIHandle;
+        public GameObject UIFeedPane;
+        public GameObject UIMainPane;
         public GameObject UI;
 
         //Animation variables
-        private GameObject petAnimator;
         private Animator anim;
-        public bool isRunning;
-
+        private float animFeedTimer;
+        private bool animFeedActive;
 
         public void Start()
         {
             canSpawn = true;
+            animFeedTimer = 2f;
+
+            //UI Initialisations
             statsActive = false;
             UI.SetActive(false);
-            uiUp = -745f;
-            uiDown = -995f;
-            animSpeed = 20f;
-            animateUI = false;
+            animSpeed = 25f;
+            animateHandle = false;
             hidingUI = false;
-            
-            }
+            uiHandleUp = -793f;
+            uiHandleDown = -1059f;
+            uiMPaneUp = 725f;
+            uiMPaneDown = 485f;
+            uiFPaneUp = -83f;
+            uiFPaneDown = -334;
+            switchingToFPane = false;
+            fPaneActive = false;
+
+        }
 
         public void Update()
         {
@@ -99,31 +109,116 @@ namespace GoogleARCore.Examples.HelloAR
                 SpawnPet();
             }
 
-            if (statsActive) statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
+            //if (statsActive) statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
 
-            if (animateUI && !hidingUI)
+
+            //UI animation section
+            //Handle
+            if (animateHandle && !hidingUI)
             {
                 UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0), Space.World);
-                if (UIHandle.transform.localPosition.y <= uiDown)
+                if (UIHandle.transform.localPosition.y <= uiHandleDown)
                 {
-                    animateUI = false;
+                    animateHandle = false;
                     hidingUI = true;
                 }
             }
-            if (animateUI && hidingUI)
+            if (animateHandle && hidingUI)
             {
                 UIHandle.transform.Translate(new Vector3(0, animSpeed, 0));
-                if (UIHandle.transform.localPosition.y >= uiUp)
+                if (UIHandle.transform.localPosition.y >= uiHandleUp)
                 {
-                    animateUI = false;
+                    animateHandle = false;
                     hidingUI = false;
+                }
+            }
+
+            //Feedpane switch
+
+            if (switchingToFPane)
+            {
+                //Move mainpane down
+                if (!animateMPane && !fPaneActive && !animateFPane) animateMPane = true;
+                if (animateMPane && !fPaneActive)
+                {
+                    UIMainPane.transform.Translate(new Vector3(0, -animSpeed, 0));
+                    if (UIMainPane.transform.localPosition.y <= uiMPaneDown)
+                    {
+                        animateFPane = true;
+                        animateMPane = false;
+                    }
+                }
+                //Move feedpane up
+                if (animateFPane && !fPaneActive)
+                {
+                    UIFeedPane.transform.Translate(new Vector3(0, animSpeed, 0));
+                    if (UIFeedPane.transform.localPosition.y >= uiFPaneUp)
+                    {
+                        animateFPane = false;
+                        fPaneActive = true;
+                        switchingToFPane = false;
+                    }
+                }
+            }
+
+
+            //Mainpane switch
+            if (switchingToMPane)
+            {
+                //if current pane active is feedpane
+                if (fPaneActive)
+                {
+                    animateFPane = true;
+                    if (animateFPane)
+                    {
+                        UIFeedPane.transform.Translate(new Vector3(0, -animSpeed, 0));
+                        if (UIFeedPane.transform.localPosition.y <= uiFPaneDown)
+                        {
+                            animateFPane = false;
+                            fPaneActive = false;
+                            animateMPane = true;
+                        }
+                    }
+                }
+
+                if (animateMPane)
+                {
+                    UIMainPane.transform.Translate(new Vector3(0, animSpeed, 0));
+                    if (UIMainPane.transform.localPosition.y >= uiMPaneUp)
+                    {
+                        animateMPane = false;
+                        switchingToMPane = false;
+                    }
+                }
+            }
+
+
+
+            //Pet animation section
+            if (animFeedActive)
+            {
+                animFeedTimer -= Time.deltaTime;
+                if (animFeedTimer < 0)
+                {
+                    stopRunning();
+                    animFeedActive = false;
                 }
             }
         }
 
+        public void SwitchToFeedPane()
+        {
+            switchingToFPane = true;
+        }
+
+        public void SwitchToMainPane()
+        {
+            switchingToMPane = true;
+        }
+
         public void ToggleUI()
         {
-            animateUI = true;
+            animateHandle = true;
         }
 
         public void ToggleStats()
@@ -141,15 +236,15 @@ namespace GoogleARCore.Examples.HelloAR
         public void FeedPet()
         {
             statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
-            anim.SetBool("isRunning", true);
-            Debug.Log(anim.GetBool("isRunning"));
+            animFeedActive = true;
+            animFeedTimer = 2f;
+            startRunning();
         }
 
         public void HydratePet()
         {
             statsHydration.transform.localScale += new Vector3(0.1f, 0f, 0f);
-            anim.SetBool("isRunning", false);
-            Debug.Log(anim.GetBool("isRunning"));
+            stopRunning();
         }
 
         public void startRunning()
@@ -205,11 +300,8 @@ namespace GoogleARCore.Examples.HelloAR
                     // Instantiate Andy model at the hit pose.
                     petModel = (GameObject)Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
                     statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
-
-                    petAnimator = GameObject.FindGameObjectWithTag("Pet");
-                    anim = petAnimator.GetComponent<Animator>();
-                    anim.SetBool("isRunning", false);
-
+                    
+                    anim = GameObject.FindGameObjectWithTag("Pet").GetComponent<Animator>();
                     statsHunger = GameObject.FindGameObjectWithTag("statsHunger");
                     statsHydration = GameObject.FindGameObjectWithTag("statsHydration");
 
