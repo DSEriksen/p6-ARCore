@@ -488,9 +488,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FirstPersonCamera: {fileID: 896679035}
   DetectedPlanePrefab: {fileID: 2026291872}
-  petPlanePrefab: {fileID: 8178587997408882545, guid: 32c14c0f52c1383438486fc31ab4f524,
+  petPlanePrefab: {fileID: 4737971509636296694, guid: dc52e2f26c5304848b1442cc1d787510,
     type: 3}
-  petPointPrefab: {fileID: 8178587997408882545, guid: 32c14c0f52c1383438486fc31ab4f524,
+  petPointPrefab: {fileID: 4737971509636296694, guid: dc52e2f26c5304848b1442cc1d787510,
     type: 3}
   statsPrefab: {fileID: 5350053440030101072, guid: 4d73250a4d0d81646bfe1e5a233cf0b2,
     type: 3}
