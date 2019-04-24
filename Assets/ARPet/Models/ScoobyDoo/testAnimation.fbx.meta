@@ -1,0 +1,190 @@
+fileFormatVersion: 2
+guid: e7da0e8a27721b94bad8e8797a1522f9
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: cc_global
+    100002: controls
+    100004: ctrl_ik_l_arm
+    100006: ctrl_ik_l_arm_0
+    100008: ctrl_ik_l_arm_SDK
+    100010: ctrl_ik_l_armAnkle
+    100012: ctrl_ik_l_armAnkle_0
+    100014: ctrl_ik_l_armAnkle_SDK
+    100016: ctrl_ik_l_armTipToe
+    100018: ctrl_ik_l_armTipToe_0
+    100020: ctrl_ik_l_armTipToe_SDK
+    100022: ctrl_ik_l_armToe
+    100024: ctrl_ik_l_armToe_0
+    100026: ctrl_ik_l_armToe_SDK
+    100028: ctrl_ik_l_leg
+    100030: ctrl_ik_l_leg_0
+    100032: ctrl_ik_l_leg_SDK
+    100034: ctrl_ik_r_arm
+    100036: ctrl_ik_r_arm_0
+    100038: ctrl_ik_r_arm_SDK
+    100040: ctrl_ik_r_armAnkle
+    100042: ctrl_ik_r_armAnkle_0
+    100044: ctrl_ik_r_armAnkle_SDK
+    100046: ctrl_ik_r_armTipToe
+    100048: ctrl_ik_r_armTipToe_0
+    100050: ctrl_ik_r_armTipToe_SDK
+    100052: ctrl_ik_r_armToe
+    100054: ctrl_ik_r_armToe_0
+    100056: ctrl_ik_r_armToe_SDK
+    100058: ctrl_ik_r_leg
+    100060: ctrl_ik_r_leg_0
+    100062: ctrl_ik_r_leg_SDK
+    100064: grp_ik_legs
+    100066: grp_l_ik_legs
+    100068: grp_r_ik_legs
+    100070: loc_l_armBank_in
+    100072: loc_l_armBank_in_0
+    100074: loc_l_armBank_out
+    100076: loc_l_armBank_out_0
+    100078: loc_r_armBank_in
+    100080: loc_r_armBank_in_0
+    100082: loc_r_armBank_out
+    100084: loc_r_armBank_out_0
+    100086: null_l_armElbowPos_L
+    100088: null_r_armElbowPos_L
+    100090: rig
+    100092: //RootNode
+    100094: transform
+    400000: cc_global
+    400002: controls
+    400004: ctrl_ik_l_arm
+    400006: ctrl_ik_l_arm_0
+    400008: ctrl_ik_l_arm_SDK
+    400010: ctrl_ik_l_armAnkle
+    400012: ctrl_ik_l_armAnkle_0
+    400014: ctrl_ik_l_armAnkle_SDK
+    400016: ctrl_ik_l_armTipToe
+    400018: ctrl_ik_l_armTipToe_0
+    400020: ctrl_ik_l_armTipToe_SDK
+    400022: ctrl_ik_l_armToe
+    400024: ctrl_ik_l_armToe_0
+    400026: ctrl_ik_l_armToe_SDK
+    400028: ctrl_ik_l_leg
+    400030: ctrl_ik_l_leg_0
+    400032: ctrl_ik_l_leg_SDK
+    400034: ctrl_ik_r_arm
+    400036: ctrl_ik_r_arm_0
+    400038: ctrl_ik_r_arm_SDK
+    400040: ctrl_ik_r_armAnkle
+    400042: ctrl_ik_r_armAnkle_0
+    400044: ctrl_ik_r_armAnkle_SDK
+    400046: ctrl_ik_r_armTipToe
+    400048: ctrl_ik_r_armTipToe_0
+    400050: ctrl_ik_r_armTipToe_SDK
+    400052: ctrl_ik_r_armToe
+    400054: ctrl_ik_r_armToe_0
+    400056: ctrl_ik_r_armToe_SDK
+    400058: ctrl_ik_r_leg
+    400060: ctrl_ik_r_leg_0
+    400062: ctrl_ik_r_leg_SDK
+    400064: grp_ik_legs
+    400066: grp_l_ik_legs
+    400068: grp_r_ik_legs
+    400070: loc_l_armBank_in
+    400072: loc_l_armBank_in_0
+    400074: loc_l_armBank_out
+    400076: loc_l_armBank_out_0
+    400078: loc_r_armBank_in
+    400080: loc_r_armBank_in_0
+    400082: loc_r_armBank_out
+    400084: loc_r_armBank_out_0
+    400086: null_l_armElbowPos_L
+    400088: null_r_armElbowPos_L
+    400090: rig
+    400092: //RootNode
+    400094: transform
+    7400000: Take 001
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
