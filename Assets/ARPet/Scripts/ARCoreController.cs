@@ -24,6 +24,7 @@ namespace GoogleARCore.Examples.HelloAR
     using GoogleARCore;
     using GoogleARCore.Examples.Common;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
     // Set up touch input propagation while using Instant Preview in the editor.
@@ -69,7 +70,7 @@ namespace GoogleARCore.Examples.HelloAR
         private bool fPaneActive, switchingToFPane, animateFPane; private float uiFPaneUp, uiFPaneDown;
         private bool ePaneActive, switchingToEPane, animateEPane; private float uiEPaneUp, uiEPaneDown;
         private bool hPaneActive, switchingToHPane, animateHPane; private float uiHPaneUp, uiHPaneDown;
-        private bool              switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
+        private bool switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
         private float animSpeed;
         public GameObject UIHandle;
         public GameObject UIFeedPane;
@@ -96,8 +97,10 @@ namespace GoogleARCore.Examples.HelloAR
             uiHandleUp = -793f; uiHandleDown = -1059f;
             uiMPaneUp = 725f; uiMPaneDown = 485f;
             uiFPaneUp = -83f; uiFPaneDown = -334;
+            uiEPaneUp = -83f; uiEPaneDown = -334;
+            uiHPaneUp = -83f; uiHPaneDown = -334;
             switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
-            fPaneActive      = ePaneActive      = hPaneActive                         = false;
+            fPaneActive = ePaneActive = hPaneActive = false;
 
         }
 
@@ -133,8 +136,7 @@ namespace GoogleARCore.Examples.HelloAR
                 }
             }
 
-            //Feedpane switch
-
+            //----Feedpane switch----
             if (switchingToFPane)
             {
                 //Move mainpane down
@@ -161,7 +163,7 @@ namespace GoogleARCore.Examples.HelloAR
                 }
             }
 
-
+            //----Exercise pane switch----
             if (switchingToEPane)
             {
                 //Move mainpane down
@@ -169,7 +171,7 @@ namespace GoogleARCore.Examples.HelloAR
                 if (animateMPane && !ePaneActive)
                 {
                     UIMainPane.transform.Translate(new Vector3(0, -animSpeed, 0));
-                    if (UIExercisePane.transform.localPosition.y <= uiMPaneDown)
+                    if (UIMainPane.transform.localPosition.y <= uiMPaneDown)
                     {
                         animateEPane = true;
                         animateMPane = false;
@@ -178,7 +180,7 @@ namespace GoogleARCore.Examples.HelloAR
                 //Move exercisepane up
                 if (animateEPane && !ePaneActive)
                 {
-                    UIFeedPane.transform.Translate(new Vector3(0, animSpeed, 0));
+                    UIExercisePane.transform.Translate(new Vector3(0, animSpeed, 0));
                     if (UIExercisePane.transform.localPosition.y >= uiEPaneUp)
                     {
                         animateEPane = false;
@@ -188,8 +190,35 @@ namespace GoogleARCore.Examples.HelloAR
                 }
             }
 
+            //---Hygeine pane switch----
+            if (switchingToHPane)
+            {
+                //Move mainpane down
+                if (!animateMPane && !hPaneActive && !animateHPane) animateMPane = true;
+                if (animateMPane && !hPaneActive)
+                {
+                    UIMainPane.transform.Translate(new Vector3(0, -animSpeed, 0));
+                    if (UIMainPane.transform.localPosition.y <= uiMPaneDown)
+                    {
+                        animateHPane = true;
+                        animateMPane = false;
+                    }
+                }
+                //Move hygeinepane up
+                if (animateHPane && !ePaneActive)
+                {
+                    UIHygeinePane.transform.Translate(new Vector3(0, animSpeed, 0));
+                    if (UIHygeinePane.transform.localPosition.y >= uiHPaneUp)
+                    {
+                        animateHPane = false;
+                        hPaneActive = true;
+                        switchingToHPane = false;
+                    }
+                }
+            }
 
-            //Mainpane switch
+
+            //---Mainpane switch----
             if (switchingToMPane)
             {
                 //if current pane active is feedpane
@@ -207,7 +236,37 @@ namespace GoogleARCore.Examples.HelloAR
                         }
                     }
                 }
-
+                //if exercisepane active
+                if (ePaneActive)
+                {
+                    animateEPane = true;
+                    if (animateEPane)
+                    {
+                        UIExercisePane.transform.Translate(new Vector3(0, -animSpeed, 0));
+                        if (UIExercisePane.transform.localPosition.y <= uiEPaneDown)
+                        {
+                            animateEPane = false;
+                            ePaneActive = false;
+                            animateMPane = true;
+                        }
+                    }
+                }
+                //if hygeine active
+                if (hPaneActive)
+                {
+                    animateHPane = true;
+                    if (animateHPane)
+                    {
+                        UIHygeinePane.transform.Translate(new Vector3(0, -animSpeed, 0));
+                        if (UIHygeinePane.transform.localPosition.y <= uiHPaneDown)
+                        {
+                            animateHPane = false;
+                            hPaneActive = false;
+                            animateMPane = true;
+                        }
+                    }
+                }
+                //move mainpane up
                 if (animateMPane)
                 {
                     UIMainPane.transform.Translate(new Vector3(0, animSpeed, 0));
@@ -235,13 +294,17 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void SwitchPane(int caseSwitch)
         {
-            switch (caseSwitch){
-                case 0: switchingToFPane = true;
-                        break;
-                case 1: switchingToHPane = true;
-                        break;
-                case 2: switchingToEPane = true;
-                        break;
+            switch (caseSwitch)
+            {
+                case 0:
+                    switchingToFPane = true;
+                    break;
+                case 1:
+                    switchingToHPane = true;
+                    break;
+                case 2:
+                    switchingToEPane = true;
+                    break;
                 default: break;
             }
         }
@@ -255,8 +318,6 @@ namespace GoogleARCore.Examples.HelloAR
         {
             animateHandle = true;
         }
-
-
 
         public void ToggleStats()
         {
@@ -272,13 +333,17 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void FeedPet()
         {
+            //Stat change
             statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
+
+            //Animation trigger
             animFeedActive = true;
             animFeedTimer = 2f;
             switchRun(true);
         }
 
-        private void switchRun(bool state){
+        private void switchRun(bool state)
+        {
             anim.SetBool("isRunning", state);
         }
 
@@ -325,7 +390,7 @@ namespace GoogleARCore.Examples.HelloAR
                     // Instantiate Andy model at the hit pose.
                     petModel = (GameObject)Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
                     statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
-                    
+
                     anim = GameObject.FindGameObjectWithTag("Pet").GetComponent<Animator>();
                     statsHunger = GameObject.FindGameObjectWithTag("statsHunger");
                     statsHydration = GameObject.FindGameObjectWithTag("statsHydration");
@@ -350,7 +415,9 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-
+        private void reset(){
+            SceneManager.LoadScene("mainscene");
+        }
 
         //---ARCore specific functions---
 
