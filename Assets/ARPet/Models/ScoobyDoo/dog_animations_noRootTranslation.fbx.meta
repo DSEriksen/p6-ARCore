@@ -243,8 +243,8 @@ ModelImporter:
     - serializedVersion: 16
       name: Idle
       takeName: Take 001
-      firstFrame: 55
-      lastFrame: 105
+      firstFrame: 0
+      lastFrame: 32
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -271,7 +271,7 @@ ModelImporter:
     - serializedVersion: 16
       name: IdleBark
       takeName: Take 001
-      firstFrame: 55
+      firstFrame: 68
       lastFrame: 104
       wrapMode: 0
       orientationOffsetY: 0
