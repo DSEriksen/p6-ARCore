@@ -62,7 +62,7 @@ namespace GoogleARCore.Examples.HelloAR
         //Stats variables
         public GameObject statsPrefab;
         private GameObject statsAnchor;
-        private GameObject statsHunger, statsHydration;
+        private GameObject statHappiness, statLifeExpect, statPoints;
 
         //UI variables
         private bool hidingUI, animateHandle;
@@ -78,6 +78,9 @@ namespace GoogleARCore.Examples.HelloAR
         public GameObject UIExercisePane;
         public GameObject UIHygeinePane;
         public GameObject UI;
+
+        //"points" variables
+        private float deductNeg, deductPos, points;
 
         //Animation variables
         private Animator anim;
@@ -102,6 +105,10 @@ namespace GoogleARCore.Examples.HelloAR
             switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
             fPaneActive = ePaneActive = hPaneActive = false;
 
+            //"Points" initialization
+            deductNeg = 0.2f;
+            deductPos = 0.4f;
+            points = 1.0f;
         }
 
         public void Update()
@@ -112,7 +119,7 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 SpawnPet();
             }
-
+            if (!canSpawn) statPoints.transform.localScale = new Vector3(points,0,0);
 
             //UI animation section
             //Handle
@@ -331,20 +338,36 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        public void FeedPet()
-        {
-            //Stat change
-            statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
-
-            //Animation trigger
-            animFeedActive = true;
-            animFeedTimer = 2f;
-            switchRun(true);
-        }
-
         private void switchRun(bool state)
         {
             anim.SetBool("isRunning", state);
+        }
+
+        private void changeStat(int caseSwitch)
+        {
+            if (points - deductNeg < 0 || points - deductPos < 0)
+            {
+                switch (caseSwitch)
+                {
+                    case 0:
+                        points -= deductNeg;
+                        statHappiness.transform.localScale = new Vector3(0.1f, 0f, 0f);
+                        break;
+
+                    case 1:
+                        points -= deductPos;
+                        statHappiness.transform.localScale = new Vector3(0.2f, 0f, 0f);
+                        break;
+
+                    default: break;
+                }
+
+                //Animation trigger
+                animFeedActive = true;
+                animFeedTimer = 2f;
+                switchRun(true);
+            }
+            else{return;}
         }
 
         private void SpawnPet()
@@ -392,8 +415,9 @@ namespace GoogleARCore.Examples.HelloAR
                     statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
 
                     anim = GameObject.FindGameObjectWithTag("Pet").GetComponent<Animator>();
-                    statsHunger = GameObject.FindGameObjectWithTag("statsHunger");
-                    statsHydration = GameObject.FindGameObjectWithTag("statsHydration");
+                    statHappiness = GameObject.FindGameObjectWithTag("statHappiness");
+                    statLifeExpect = GameObject.FindGameObjectWithTag("statLifeExpect");
+                    statPoints = GameObject.FindGameObjectWithTag("statPoints");
 
                     // Compensate for the hitPose rotation facing away from the raycast (i.e. camera).
                     petModel.transform.Rotate(0, k_ModelRotation, 0, Space.Self);
@@ -408,14 +432,16 @@ namespace GoogleARCore.Examples.HelloAR
                     statsAnchor.transform.Translate(0.30f, 0.60f, 0.35f);
 
                     UI.SetActive(true);
-                    statsHunger.transform.localScale -= new Vector3(0.5f, 0f, 0f);
+                    statHappiness.transform.localScale -= new Vector3(0.5f, 0f, 0f);
+                    statLifeExpect.transform.localScale -= new Vector3(0.5f, 0f, 0f);
 
                     canSpawn = false;
                 }
             }
         }
 
-        public void reset(){
+        public void reset()
+        {
             SceneManager.LoadScene("mainscene");
         }
 
