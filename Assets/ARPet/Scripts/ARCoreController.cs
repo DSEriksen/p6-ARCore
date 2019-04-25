@@ -61,16 +61,21 @@ namespace GoogleARCore.Examples.HelloAR
         //Stats variables
         public GameObject statsPrefab;
         private GameObject statsAnchor;
-        private bool statsActive;
         private GameObject statsHunger, statsHydration;
 
         //UI variables
-        private bool hidingUI, animateHandle, fPaneActive, animateFPane, animateMPane;
-        private bool switchingToFPane, switchingToMPane;
-        private float uiHandleUp, uiHandleDown, uiMPaneUp, uiMPaneDown, uiFPaneUp, uiFPaneDown, animSpeed;
+        private bool hidingUI, animateHandle;
+        private float uiHandleUp, uiHandleDown;
+        private bool fPaneActive, switchingToFPane, animateFPane; private float uiFPaneUp, uiFPaneDown;
+        private bool ePaneActive, switchingToEPane, animateEPane; private float uiEPaneUp, uiEPaneDown;
+        private bool hPaneActive, switchingToHPane, animateHPane; private float uiHPaneUp, uiHPaneDown;
+        private bool              switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
+        private float animSpeed;
         public GameObject UIHandle;
         public GameObject UIFeedPane;
         public GameObject UIMainPane;
+        public GameObject UIExercisePane;
+        public GameObject UIHygeinePane;
         public GameObject UI;
 
         //Animation variables
@@ -84,19 +89,15 @@ namespace GoogleARCore.Examples.HelloAR
             animFeedTimer = 2f;
 
             //UI Initialisations
-            statsActive = false;
             UI.SetActive(false);
             animSpeed = 25f;
             animateHandle = false;
             hidingUI = false;
-            uiHandleUp = -793f;
-            uiHandleDown = -1059f;
-            uiMPaneUp = 725f;
-            uiMPaneDown = 485f;
-            uiFPaneUp = -83f;
-            uiFPaneDown = -334;
-            switchingToFPane = false;
-            fPaneActive = false;
+            uiHandleUp = -793f; uiHandleDown = -1059f;
+            uiMPaneUp = 725f; uiMPaneDown = 485f;
+            uiFPaneUp = -83f; uiFPaneDown = -334;
+            switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
+            fPaneActive      = ePaneActive      = hPaneActive                         = false;
 
         }
 
@@ -109,11 +110,10 @@ namespace GoogleARCore.Examples.HelloAR
                 SpawnPet();
             }
 
-            //if (statsActive) statsHydration.transform.localScale -= new Vector3(0.001f, 0f, 0f);
-
 
             //UI animation section
             //Handle
+
             if (animateHandle && !hidingUI)
             {
                 UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0), Space.World);
@@ -162,6 +162,33 @@ namespace GoogleARCore.Examples.HelloAR
             }
 
 
+            if (switchingToEPane)
+            {
+                //Move mainpane down
+                if (!animateMPane && !ePaneActive && !animateEPane) animateMPane = true;
+                if (animateMPane && !ePaneActive)
+                {
+                    UIMainPane.transform.Translate(new Vector3(0, -animSpeed, 0));
+                    if (UIExercisePane.transform.localPosition.y <= uiMPaneDown)
+                    {
+                        animateEPane = true;
+                        animateMPane = false;
+                    }
+                }
+                //Move exercisepane up
+                if (animateEPane && !ePaneActive)
+                {
+                    UIFeedPane.transform.Translate(new Vector3(0, animSpeed, 0));
+                    if (UIExercisePane.transform.localPosition.y >= uiEPaneUp)
+                    {
+                        animateEPane = false;
+                        ePaneActive = true;
+                        switchingToEPane = false;
+                    }
+                }
+            }
+
+
             //Mainpane switch
             if (switchingToMPane)
             {
@@ -200,15 +227,23 @@ namespace GoogleARCore.Examples.HelloAR
                 animFeedTimer -= Time.deltaTime;
                 if (animFeedTimer < 0)
                 {
-                    stopRunning();
+                    switchRun(false);
                     animFeedActive = false;
                 }
             }
         }
 
-        public void SwitchToFeedPane()
+        public void SwitchPane(int caseSwitch)
         {
-            switchingToFPane = true;
+            switch (caseSwitch){
+                case 0: switchingToFPane = true;
+                        break;
+                case 1: switchingToHPane = true;
+                        break;
+                case 2: switchingToEPane = true;
+                        break;
+                default: break;
+            }
         }
 
         public void SwitchToMainPane()
@@ -220,6 +255,8 @@ namespace GoogleARCore.Examples.HelloAR
         {
             animateHandle = true;
         }
+
+
 
         public void ToggleStats()
         {
@@ -238,23 +275,11 @@ namespace GoogleARCore.Examples.HelloAR
             statsHunger.transform.localScale += new Vector3(0.1f, 0f, 0f);
             animFeedActive = true;
             animFeedTimer = 2f;
-            startRunning();
+            switchRun(true);
         }
 
-        public void HydratePet()
-        {
-            statsHydration.transform.localScale += new Vector3(0.1f, 0f, 0f);
-            stopRunning();
-        }
-
-        public void startRunning()
-        {
-            anim.SetBool("isRunning", true);
-        }
-
-        public void stopRunning()
-        {
-            anim.SetBool("isRunning", false);
+        private void switchRun(bool state){
+            anim.SetBool("isRunning", state);
         }
 
         private void SpawnPet()
@@ -321,7 +346,6 @@ namespace GoogleARCore.Examples.HelloAR
                     statsHunger.transform.localScale -= new Vector3(0.5f, 0f, 0f);
 
                     canSpawn = false;
-                    statsActive = true;
                 }
             }
         }
