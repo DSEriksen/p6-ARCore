@@ -867,6 +867,8 @@ MonoBehaviour:
   UIHandle: {fileID: 628111842}
   UIFeedPane: {fileID: 1500885968}
   UIMainPane: {fileID: 1141235761}
+  UIExercisePane: {fileID: 731585107}
+  UIHygeinePane: {fileID: 141660988}
   UI: {fileID: 2690955169012711343}
 --- !u!1 &628111842
 GameObject:
