@@ -6,9 +6,10 @@ TagManager:
   tags:
   - ManipulationSystem
   - Pet
-  - statsHunger
-  - statsHydration
   - HideShowUI
+  - statHappiness
+  - statLifeExpect
+  - statPoints
   layers:
   - Default
   - TransparentFX
