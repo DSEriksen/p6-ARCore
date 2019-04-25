@@ -415,7 +415,7 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        private void reset(){
+        public void reset(){
             SceneManager.LoadScene("mainscene");
         }
 
