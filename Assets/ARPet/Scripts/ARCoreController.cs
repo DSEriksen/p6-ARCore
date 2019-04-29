@@ -97,7 +97,7 @@ namespace GoogleARCore.Examples.HelloAR
             animSpeed = 25f;
             animateHandle = false;
             hidingUI = false;
-            uiHandleUp = -793f; uiHandleDown = -1059f;
+            uiHandleUp = -1451f; uiHandleDown = -1719f;
             uiMPaneUp = 725f; uiMPaneDown = 485f;
             uiFPaneUp = -83f; uiFPaneDown = -334;
             uiEPaneUp = -83f; uiEPaneDown = -334;
@@ -119,7 +119,7 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 SpawnPet();
             }
-            if (!canSpawn) statPoints.transform.localScale = new Vector3(points,0,0);
+            //if (!canSpawn) statPoints.transform.localScale = new Vector3(points, 0, 0);
 
             //UI animation section
             //Handle
@@ -343,31 +343,40 @@ namespace GoogleARCore.Examples.HelloAR
             anim.SetBool("isRunning", state);
         }
 
-        private void changeStat(int caseSwitch)
+        public void animate()
         {
-            if (points - deductNeg < 0 || points - deductPos < 0)
+            //Animation trigger
+            animFeedActive = true;
+            animFeedTimer = 2.2f;
+            switchRun(true);
+        }
+
+        public void changeStat(int caseSwitch)
+        {
+            if (points - deductNeg > 0 || points - deductPos > 0)
             {
                 switch (caseSwitch)
                 {
                     case 0:
                         points -= deductNeg;
-                        statHappiness.transform.localScale = new Vector3(0.1f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         break;
 
                     case 1:
                         points -= deductPos;
-                        statHappiness.transform.localScale = new Vector3(0.2f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         break;
 
                     default: break;
                 }
-
+                
+                Debug.Log(points);
                 //Animation trigger
                 animFeedActive = true;
-                animFeedTimer = 2f;
+                animFeedTimer = 2.2f;
                 switchRun(true);
             }
-            else{return;}
+            else { return; }
         }
 
         private void SpawnPet()

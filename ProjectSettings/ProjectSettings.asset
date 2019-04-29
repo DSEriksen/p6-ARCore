@@ -156,7 +156,7 @@ PlayerSettings:
     Android: com.AUUMED607.P6
   buildNumber: {}
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 28
+  AndroidMinSdkVersion: 26
   AndroidTargetSdkVersion: 28
   AndroidPreferredInstallLocation: 1
   aotOptions: 
