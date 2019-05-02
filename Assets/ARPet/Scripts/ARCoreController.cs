@@ -343,6 +343,36 @@ namespace GoogleARCore.Examples.HelloAR
             anim.SetBool("isRunning", state);
         }
 
+        private void switchEat(bool state)
+        {
+            anim.SetBool("isEating", state);
+        }
+
+        private void setShake(bool state)
+        {
+            anim.SetBool("isShaking", state);
+        }
+
+        private void setBark(bool state)
+        {
+            anim.SetBool("isBarking", state);
+        }
+
+        private void setScratch(bool state)
+        {
+            anim.SetBool("isScratching", state);
+        }
+
+        private void setSit(bool state)
+        {
+            anim.SetBool("isSitting", state);
+        }
+
+        private void setWalk(bool state)
+        {
+            anim.SetBool("isWalking", state);
+        }
+
         public void animate()
         {
             //Animation trigger
