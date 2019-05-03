@@ -25,6 +25,7 @@ namespace GoogleARCore.Examples.HelloAR
     using GoogleARCore.Examples.Common;
     using UnityEngine;
     using UnityEngine.SceneManagement;
+    using UnityEngine.UI;
 
 #if UNITY_EDITOR
     // Set up touch input propagation while using Instant Preview in the editor.
@@ -77,20 +78,23 @@ namespace GoogleARCore.Examples.HelloAR
         public GameObject UIMainPane;
         public GameObject UIExercisePane;
         public GameObject UIHygeinePane;
+        public GameObject UIPoints;
         public GameObject UI;
+        private Text PointsText;
 
         //"points" variables
-        private float deductNeg, deductPos, points;
+        private float deductNeg, deductPos, points, dayScore, pointsToString;
 
         //Animation variables
         private Animator anim;
-        private float animFeedTimer;
-        private bool animFeedActive;
+        private float animTimer;
+        private bool animActive;
+        private string currentAnim;
+        private ParticleSystem EatParticles;
 
         public void Start()
         {
             canSpawn = true;
-            animFeedTimer = 2f;
 
             //UI Initialisations
             UI.SetActive(false);
@@ -104,11 +108,14 @@ namespace GoogleARCore.Examples.HelloAR
             uiHPaneUp = -83f; uiHPaneDown = -334;
             switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
             fPaneActive = ePaneActive = hPaneActive = false;
+            PointsText = UIPoints.GetComponent<Text>();
 
             //"Points" initialization
             deductNeg = 0.2f;
             deductPos = 0.4f;
             points = 1.0f;
+            dayScore = 0f;
+
         }
 
         public void Update()
@@ -119,7 +126,21 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 SpawnPet();
             }
-            //if (!canSpawn) statPoints.transform.localScale = new Vector3(points, 0, 0);
+
+
+            pointsToString = points * 10;
+            PointsText.text = "Points: " + pointsToString + "/10";
+
+            if(!canSpawn){
+                if (statHappiness.transform.localScale.x >= 1f)
+                {
+                    statHappiness.transform.localScale = new Vector3(1f, 0f, 0f);
+                }
+                if (statLifeExpect.transform.localScale.x >= 1f)
+                {
+                    statLifeExpect.transform.localScale = new Vector3(1f, 0f, 0f);
+                }
+            }
 
             //UI animation section
             //Handle
@@ -288,13 +309,17 @@ namespace GoogleARCore.Examples.HelloAR
 
 
             //Pet animation section
-            if (animFeedActive)
+            if (animActive)
             {
-                animFeedTimer -= Time.deltaTime;
-                if (animFeedTimer < 0)
+                animTimer -= Time.deltaTime;
+                if (animTimer < 0)
                 {
-                    switchRun(false);
-                    animFeedActive = false;
+                    setAnim(currentAnim, false);
+                    animActive = false;
+                    if (EatParticles.IsAlive())
+                    {
+                        EatParticles.Stop();
+                    }
                 }
             }
         }
@@ -338,75 +363,103 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        private void switchRun(bool state)
+        private void setAnim(string caseSwitch, bool state)
         {
-            anim.SetBool("isRunning", state);
+            animActive = true;
+            animTimer = 2.2f;
+            currentAnim = caseSwitch;
+            if (animActive)
+            {
+                switch (caseSwitch)
+                {
+                    case "run":
+                        anim.SetBool("isRunning", state);
+                        break;
+                    case "eat":
+                        anim.SetBool("isEating", state);
+                        break;
+                    case "shake":
+                        anim.SetBool("isShaking", state);
+                        break;
+                    case "bark":
+                        anim.SetBool("isBarking", state);
+                        break;
+                    case "scratch":
+                        anim.SetBool("isScratching", state);
+                        break;
+                    case "sit":
+                        anim.SetBool("isSitting", state);
+                        break;
+                    case "walk":
+                        anim.SetBool("isWalking", state);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
-        private void switchEat(bool state)
-        {
-            anim.SetBool("isEating", state);
-        }
-
-        private void setShake(bool state)
-        {
-            anim.SetBool("isShaking", state);
-        }
-
-        private void setBark(bool state)
-        {
-            anim.SetBool("isBarking", state);
-        }
-
-        private void setScratch(bool state)
-        {
-            anim.SetBool("isScratching", state);
-        }
-
-        private void setSit(bool state)
-        {
-            anim.SetBool("isSitting", state);
-        }
-
-        private void setWalk(bool state)
-        {
-            anim.SetBool("isWalking", state);
-        }
-
-        public void animate()
-        {
-            //Animation trigger
-            animFeedActive = true;
-            animFeedTimer = 2.2f;
-            switchRun(true);
-        }
-
-        public void changeStat(int caseSwitch)
+        //TODO: change so buttons do all the input, and not code
+        //      requires custom eventscript
+        public void changeStat(string caseSwitch)
         {
             if (points - deductNeg > 0 || points - deductPos > 0)
             {
                 switch (caseSwitch)
                 {
-                    case 0:
+                    case "feedNeg":
                         points -= deductNeg;
+                        dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
+                        setAnim("eat", true);
+                        EatParticles.Play();
                         break;
-
-                    case 1:
+                    case "feedPos":
                         points -= deductPos;
+                        dayScore += 0.03f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
+                        setAnim("eat", true);
+                        EatParticles.Play();
                         break;
-
+                    case "hygNeg":
+                        points -= deductNeg;
+                        dayScore += 0.01f;
+                        statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
+                        setAnim("shake", true);
+                        break;
+                    case "hygPos":
+                        points -= deductPos;
+                        dayScore += 0.03f;
+                        statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
+                        setAnim("shake", true);
+                        break;
+                    case "exerNeg":
+                        points -= deductNeg;
+                        dayScore += 0.01f;
+                        statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
+                        setAnim("sit", true);
+                        break;
+                    case "exerPos":
+                        points -= deductPos;
+                        dayScore += 0.03f;
+                        statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
+                        setAnim("run", true);
+                        break;
                     default: break;
                 }
-                
+
                 Debug.Log(points);
-                //Animation trigger
-                animFeedActive = true;
-                animFeedTimer = 2.2f;
-                switchRun(true);
             }
             else { return; }
+        }
+
+        public void nextDay()
+        {
+            float lifeScore = 0.1f - dayScore;
+            dayScore = 0f;
+            points = 1f;
+            statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
+            statHappiness.transform.localScale -= new Vector3(0.2f, 0f, 0f);
         }
 
         private void SpawnPet()
@@ -457,6 +510,7 @@ namespace GoogleARCore.Examples.HelloAR
                     statHappiness = GameObject.FindGameObjectWithTag("statHappiness");
                     statLifeExpect = GameObject.FindGameObjectWithTag("statLifeExpect");
                     statPoints = GameObject.FindGameObjectWithTag("statPoints");
+                    EatParticles = GameObject.FindGameObjectWithTag("Mouth").GetComponent<ParticleSystem>();
 
                     // Compensate for the hitPose rotation facing away from the raycast (i.e. camera).
                     petModel.transform.Rotate(0, k_ModelRotation, 0, Space.Self);
