@@ -92,9 +92,30 @@ namespace GoogleARCore.Examples.HelloAR
         private string currentAnim;
         private ParticleSystem EatParticles;
 
+        //Audio Varibales
+        public AudioClip barkClip;
+        public AudioSource barkSource;
+        public AudioClip shakeClip;
+        public AudioSource shakeSource;
+        public AudioClip eatClip;
+        public AudioSource eatSource;
+        public AudioClip pantClip;
+        public AudioSource pantSource;
+        public AudioClip scratchClip;
+        public AudioSource scratchSource;
+
+
         public void Start()
         {
             canSpawn = true;
+
+            //Audio initializations
+            barkSource.clip = barkClip;
+            shakeSource.clip = shakeClip;
+            eatSource.clip = eatClip;
+            pantSource.clip = pantClip;
+            scratchSource.clip = scratchClip;
+
 
             //UI Initialisations
             UI.SetActive(false);
@@ -377,18 +398,23 @@ namespace GoogleARCore.Examples.HelloAR
                         break;
                     case "eat":
                         anim.SetBool("isEating", state);
+                        eatSource.Play();
                         break;
                     case "shake":
                         anim.SetBool("isShaking", state);
+                        shakeSource.Play();
                         break;
                     case "bark":
                         anim.SetBool("isBarking", state);
+                        barkSource.Play();
                         break;
                     case "scratch":
                         anim.SetBool("isScratching", state);
+                        scratchSource.Play();
                         break;
                     case "sit":
                         anim.SetBool("isSitting", state);
+                        pantSource.Play();
                         break;
                     case "walk":
                         anim.SetBool("isWalking", state);
