@@ -73,13 +73,7 @@ namespace GoogleARCore.Examples.HelloAR
         private bool hPaneActive, switchingToHPane, animateHPane; private float uiHPaneUp, uiHPaneDown;
         private bool switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
         private float animSpeed;
-        public GameObject UIHandle;
-        public GameObject UIFeedPane;
-        public GameObject UIMainPane;
-        public GameObject UIExercisePane;
-        public GameObject UIHygeinePane;
-        public GameObject UIPoints;
-        public GameObject UI;
+        public GameObject UIHandle, UIFeedPane, UIMainPane, UIExercisePane, UIHygeinePane, UIPoints, UI;
         private Text PointsText;
 
         //"points" variables
@@ -93,17 +87,8 @@ namespace GoogleARCore.Examples.HelloAR
         private ParticleSystem EatParticles;
 
         //Audio Varibales
-        public AudioClip barkClip;
-        public AudioSource barkSource;
-        public AudioClip shakeClip;
-        public AudioSource shakeSource;
-        public AudioClip eatClip;
-        public AudioSource eatSource;
-        public AudioClip pantClip;
-        public AudioSource pantSource;
-        public AudioClip scratchClip;
-        public AudioSource scratchSource;
-
+        public AudioClip barkClip, shakeClip, eatClip, pantClip, scratchClip;
+        public AudioSource barkSource, shakeSource, eatSource, pantSource, scratchSource;
 
         public void Start()
         {
@@ -152,7 +137,8 @@ namespace GoogleARCore.Examples.HelloAR
             pointsToString = points * 10;
             PointsText.text = "Points: " + pointsToString + "/10";
 
-            if(!canSpawn){
+            if (!canSpawn)
+            {
                 if (statHappiness.transform.localScale.x >= 1f)
                 {
                     statHappiness.transform.localScale = new Vector3(1f, 0f, 0f);
