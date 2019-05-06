@@ -36,6 +36,7 @@ namespace GoogleARCore.Examples.HelloAR
     /// Controls the HelloAR example.
     public class ARCoreController : MonoBehaviour
     {
+        [Header("ARCore")]
         /// The first-person camera being used to render the passthrough camera image (i.e. AR background).
         public Camera FirstPersonCamera;
 
@@ -60,11 +61,13 @@ namespace GoogleARCore.Examples.HelloAR
         private GameObject petModel;
         private Anchor anchor;
 
+        [Header("Stats")]
         //Stats variables
         public GameObject statsPrefab;
         private GameObject statsAnchor;
         private GameObject statHappiness, statLifeExpect, statPoints;
 
+        [Header("UI")]
         //UI variables
         private bool hidingUI, animateHandle;
         private float uiHandleUp, uiHandleDown;
@@ -72,9 +75,34 @@ namespace GoogleARCore.Examples.HelloAR
         private bool ePaneActive, switchingToEPane, animateEPane; private float uiEPaneUp, uiEPaneDown;
         private bool hPaneActive, switchingToHPane, animateHPane; private float uiHPaneUp, uiHPaneDown;
         private bool switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
-        private float animSpeed;
+        public float animSpeed;
         public GameObject UIHandle, UIFeedPane, UIMainPane, UIExercisePane, UIHygeinePane, UIPoints, UI;
         private Text PointsText;
+
+        [Header("Infoboxes")]
+        //Infobox variables
+        public GameObject InfoMenu;
+        public GameObject FoodInfoMeat;
+        public GameObject FoodInfoPlant;
+        public GameObject HygeineInfoEco;
+        public GameObject HygeineInfoCom;
+        public GameObject ExerInfoWalk;
+        public GameObject ExerInfoCar;
+        public GameObject HygeineInfoComShort;
+        public GameObject HygeineInfoEcoShort;
+        public GameObject ExerInfoCarShort;
+        public GameObject ExerInfoWalkShort;
+        public GameObject FoodInfoMeatShort;
+        public GameObject FoodInfoPlantShort;
+        private bool infoMenuActive;
+        private bool infoScreenActive;
+        private string currentInfoScreen;
+        private bool animateInfobox;
+        private bool infoboxIsDown;
+        private float infoboxUp = 343f;
+        private float infoboxDown = 0f;
+        private GameObject CurrentInfobox;
+        private float infoboxTimer;
 
         //"points" variables
         private float deductNeg, deductPos, points, dayScore, pointsToString;
@@ -85,9 +113,15 @@ namespace GoogleARCore.Examples.HelloAR
         private bool animActive;
         private string currentAnim;
         private ParticleSystem EatParticles;
+        private GameObject pet;
 
+        [Header("Audio")]
         //Audio Varibales
-        public AudioClip barkClip, shakeClip, eatClip, pantClip, scratchClip;
+        public AudioClip barkClip;
+        public AudioClip shakeClip;
+        public AudioClip eatClip;
+        public AudioClip pantClip;
+        public AudioClip scratchClip;
         public AudioSource barkSource, shakeSource, eatSource, pantSource, scratchSource;
 
         public void Start()
@@ -104,7 +138,6 @@ namespace GoogleARCore.Examples.HelloAR
 
             //UI Initialisations
             UI.SetActive(false);
-            animSpeed = 25f;
             animateHandle = false;
             hidingUI = false;
             uiHandleUp = -1451f; uiHandleDown = -1719f;
@@ -121,6 +154,10 @@ namespace GoogleARCore.Examples.HelloAR
             deductPos = 0.4f;
             points = 1.0f;
             dayScore = 0f;
+
+            //Infobox initiliazations
+            infoMenuActive = false;
+           // CurrentInfobox.SetActive(false);
 
         }
 
@@ -314,6 +351,35 @@ namespace GoogleARCore.Examples.HelloAR
             }
 
 
+            //infobox animation
+            if (animateInfobox && !infoboxIsDown)
+            {
+                CurrentInfobox.transform.Translate(new Vector3(0, -animSpeed, 0));
+                if (CurrentInfobox.transform.localPosition.y <= infoboxDown)
+                {
+                    infoboxIsDown = true;
+                    animateInfobox = false;
+                }
+            }
+            if (animateInfobox && infoboxIsDown)
+            {
+                CurrentInfobox.transform.Translate(new Vector3(0, animSpeed, 0));
+                if (CurrentInfobox.transform.localPosition.y >= infoboxUp)
+                {
+                    animateInfobox = false;
+                    infoboxIsDown = false;
+                }
+            }
+
+            if (infoboxIsDown)
+            {
+                infoboxTimer -= Time.deltaTime;
+                if (infoboxTimer < 0)
+                {
+                    animateInfobox = true;
+                }
+            }
+
 
             //Pet animation section
             if (animActive)
@@ -425,6 +491,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
+                        ToggleInfoboxShort(FoodInfoMeatShort);
                         break;
                     case "feedPos":
                         points -= deductPos;
@@ -432,35 +499,38 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
+                        ToggleInfoboxShort(FoodInfoPlantShort);
                         break;
                     case "hygNeg":
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         setAnim("shake", true);
+                        ToggleInfoboxShort(HygeineInfoComShort);
                         break;
                     case "hygPos":
                         points -= deductPos;
                         dayScore += 0.03f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("shake", true);
+                        ToggleInfoboxShort(HygeineInfoEcoShort);
                         break;
                     case "exerNeg":
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         setAnim("sit", true);
+                        ToggleInfoboxShort(ExerInfoCarShort);
                         break;
                     case "exerPos":
                         points -= deductPos;
                         dayScore += 0.03f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("run", true);
+                        ToggleInfoboxShort(ExerInfoWalkShort);
                         break;
                     default: break;
                 }
-
-                Debug.Log(points);
             }
             else { return; }
         }
@@ -472,6 +542,130 @@ namespace GoogleARCore.Examples.HelloAR
             points = 1f;
             statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
             statHappiness.transform.localScale -= new Vector3(0.2f, 0f, 0f);
+        }
+
+        public void ToggleInfoMenu()
+        {
+
+            if (!infoMenuActive)
+            {
+                //UI.SetActive(false);
+                InfoMenu.SetActive(true);
+                //pet.SetActive(false);
+                infoMenuActive = true;
+            }
+
+            else
+            {
+                //UI.SetActive(true);
+                InfoMenu.SetActive(false);
+                //pet.SetActive(true);
+                infoMenuActive = false;
+            }
+        }
+
+        public void ToggleInfoBox(string caseswitch)
+        {
+            switch (caseswitch)
+            {
+                case "food-meat":
+                    currentInfoScreen = "food-meat";
+                    if (!infoScreenActive)
+                    {
+                        FoodInfoMeat.SetActive(true);
+                        infoScreenActive = true;
+                    }
+                    else
+                    {
+                        FoodInfoMeat.SetActive(false);
+                        infoScreenActive = false;
+                    }
+                    break;
+
+                case "food-plant":
+                    currentInfoScreen = "food-plant";
+                    if (!infoScreenActive)
+                    {
+                        FoodInfoPlant.SetActive(true);
+                        infoScreenActive = true;
+                    }
+                    else
+                    {
+                        FoodInfoPlant.SetActive(false);
+                        infoScreenActive = false;
+                    }
+                    break;
+
+                case "hygeine-commercial":
+                    currentInfoScreen = "hygeine-commercial";
+                    if (!infoScreenActive)
+                    {
+                        HygeineInfoCom.SetActive(true);
+                        infoScreenActive = true;
+                    }
+                    else
+                    {
+                        HygeineInfoCom.SetActive(false);
+                        infoScreenActive = false;
+                    }
+                    break;
+
+                case "hygeine-eco":
+                    currentInfoScreen = "hygeine-eco";
+                    if (!infoScreenActive)
+                    {
+                        HygeineInfoEco.SetActive(true);
+                        infoScreenActive = true;
+                    }
+                    else
+                    {
+                        HygeineInfoEco.SetActive(false);
+                        infoScreenActive = false;
+                    }
+                    break;
+
+                case "exercise-walk":
+                    currentInfoScreen = "exercise-walk";
+                    if (!infoScreenActive)
+                    {
+                        ExerInfoWalk.SetActive(true);
+                        infoScreenActive = true;
+                    }
+                    else
+                    {
+                        ExerInfoWalk.SetActive(false);
+                        infoScreenActive = false;
+                    }
+                    break;
+
+                case "exercise-car":
+                    currentInfoScreen = "exercise-car";
+                    if (!infoScreenActive)
+                    {
+                        ExerInfoCar.SetActive(true);
+                        infoScreenActive = true;
+                    }
+                    else
+                    {
+                        ExerInfoCar.SetActive(false);
+                        infoScreenActive = false;
+                    }
+                    break;
+
+                case "back":
+                    ToggleInfoBox(currentInfoScreen);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public void ToggleInfoboxShort(GameObject gameObject)
+        {
+            CurrentInfobox = gameObject;
+            infoboxTimer = 3f;
+            animateInfobox = true;
         }
 
         private void SpawnPet()
@@ -519,6 +713,7 @@ namespace GoogleARCore.Examples.HelloAR
                     statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
 
                     anim = GameObject.FindGameObjectWithTag("Pet").GetComponent<Animator>();
+                    pet = GameObject.FindGameObjectWithTag("Pet");
                     statHappiness = GameObject.FindGameObjectWithTag("statHappiness");
                     statLifeExpect = GameObject.FindGameObjectWithTag("statLifeExpect");
                     statPoints = GameObject.FindGameObjectWithTag("statPoints");
