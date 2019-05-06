@@ -99,8 +99,8 @@ namespace GoogleARCore.Examples.HelloAR
         private string currentInfoScreen;
         private bool animateInfobox;
         private bool infoboxIsDown;
-        private float infoboxUp = 343f;
-        private float infoboxDown = 0f;
+        private float infoboxUp = 413f;
+        private float infoboxDown = 50f;
         private GameObject CurrentInfobox;
         private float infoboxTimer;
 
@@ -140,7 +140,7 @@ namespace GoogleARCore.Examples.HelloAR
             UI.SetActive(false);
             animateHandle = false;
             hidingUI = false;
-            uiHandleUp = -1451f; uiHandleDown = -1719f;
+            uiHandleUp = -1516f; uiHandleDown = -1787f;
             uiMPaneUp = 725f; uiMPaneDown = 485f;
             uiFPaneUp = -83f; uiFPaneDown = -334;
             uiEPaneUp = -83f; uiEPaneDown = -334;
