@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+﻿    //-----------------------------------------------------------------------
 // <copyright file="HelloARController.cs" company="Google">
 //
 // Copyright 2017 Google Inc. All Rights Reserved.
@@ -105,7 +105,8 @@ namespace GoogleARCore.Examples.HelloAR
         private float infoboxTimer;
 
         //"points" variables
-        private float deductNeg, deductPos, points, dayScore, pointsToString;
+        private float dayScore;
+        private int points, deductNeg, deductPos;
 
         //Animation variables
         private Animator anim;
@@ -142,17 +143,18 @@ namespace GoogleARCore.Examples.HelloAR
             hidingUI = false;
             uiHandleUp = -1516f; uiHandleDown = -1787f;
             uiMPaneUp = 725f; uiMPaneDown = 485f;
-            uiFPaneUp = -83f; uiFPaneDown = -334;
-            uiEPaneUp = -83f; uiEPaneDown = -334;
-            uiHPaneUp = -83f; uiHPaneDown = -334;
+            //TODO: make these 1 variable
+            uiFPaneUp = -89f; uiFPaneDown = -334;
+            uiEPaneUp = -89f; uiEPaneDown = -334;
+            uiHPaneUp = -89f; uiHPaneDown = -334;
             switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
             fPaneActive = ePaneActive = hPaneActive = false;
             PointsText = UIPoints.GetComponent<Text>();
 
             //"Points" initialization
-            deductNeg = 0.2f;
-            deductPos = 0.4f;
-            points = 1.0f;
+            deductNeg = 2;
+            deductPos = 4;
+            points = 10;
             dayScore = 0f;
 
             //Infobox initiliazations
@@ -170,19 +172,19 @@ namespace GoogleARCore.Examples.HelloAR
                 SpawnPet();
             }
 
-
-            pointsToString = points * 10;
-            PointsText.text = "Points: " + pointsToString + "/10";
+            PointsText.text = "Points: " + points + "/10";
 
             if (!canSpawn)
             {
                 if (statHappiness.transform.localScale.x >= 1f)
                 {
-                    statHappiness.transform.localScale = new Vector3(1f, 0f, 0f);
+                    Debug.Log("Happiness exceeded");
+                    //statHappiness.transform.localScale = new Vector3(1f, 0f, 0f);
                 }
                 if (statLifeExpect.transform.localScale.x >= 1f)
                 {
-                    statLifeExpect.transform.localScale = new Vector3(1f, 0f, 0f);
+                    Debug.Log("Life expectation exceeded");
+                    //statLifeExpect.transform.localScale = new Vector3(1f, 0f, 0f);
                 }
             }
 
@@ -539,7 +541,7 @@ namespace GoogleARCore.Examples.HelloAR
         {
             float lifeScore = 0.1f - dayScore;
             dayScore = 0f;
-            points = 1f;
+            points = 10;
             statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
             statHappiness.transform.localScale -= new Vector3(0.2f, 0f, 0f);
         }
