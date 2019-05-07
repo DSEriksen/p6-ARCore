@@ -1,10 +1,13 @@
 Bugs:
-	Happiness goes empty at full (?) happiness
-	Points can go into overflow in some cases (generic shampoo and others)
-	Build resolution slightly offset
-
+	
 Adjustsments:
-	Longer time for shorttext
 	Cut sound appropiately
-	Make particles bigger
+
+Features:
+	+ and - signs with numbers at happiness and lifeexpect
+	New button graphics	
+	More lighting
+	
+	New scene without AR camera
+
 	

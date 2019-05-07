@@ -1,4 +1,4 @@
-﻿    //-----------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------
 // <copyright file="HelloARController.cs" company="Google">
 //
 // Copyright 2017 Google Inc. All Rights Reserved.
@@ -103,6 +103,8 @@ namespace GoogleARCore.Examples.HelloAR
         private float infoboxDown = 50f;
         private GameObject CurrentInfobox;
         private float infoboxTimer;
+        private int[] infoboxCount = new int[6];
+        //[0] foodmeat, [1] foodplant, [2] hygeineCom, [3] hygeineEco, [4] exerCar, [5] exerWalk
 
         //"points" variables
         private float dayScore;
@@ -136,7 +138,6 @@ namespace GoogleARCore.Examples.HelloAR
             pantSource.clip = pantClip;
             scratchSource.clip = scratchClip;
 
-
             //UI Initialisations
             UI.SetActive(false);
             animateHandle = false;
@@ -159,7 +160,11 @@ namespace GoogleARCore.Examples.HelloAR
 
             //Infobox initiliazations
             infoMenuActive = false;
-           // CurrentInfobox.SetActive(false);
+            for (int i = 0; i > 5; i++)
+            {
+                infoboxCount[i] = 0;
+            }
+            // CurrentInfobox.SetActive(false);
 
         }
 
@@ -178,13 +183,11 @@ namespace GoogleARCore.Examples.HelloAR
             {
                 if (statHappiness.transform.localScale.x >= 1f)
                 {
-                    Debug.Log("Happiness exceeded");
-                    //statHappiness.transform.localScale = new Vector3(1f, 0f, 0f);
+                    statHappiness.transform.localScale = new Vector3(1f, 1f, 1f);
                 }
                 if (statLifeExpect.transform.localScale.x >= 1f)
                 {
-                    Debug.Log("Life expectation exceeded");
-                    //statLifeExpect.transform.localScale = new Vector3(1f, 0f, 0f);
+                    statLifeExpect.transform.localScale = new Vector3(1f, 1f, 1f);
                 }
             }
 
@@ -479,62 +482,98 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        //TODO: change so buttons do all the input, and not code
-        //      requires custom eventscript
         public void changeStat(string caseSwitch)
         {
-            if (points - deductNeg > 0 || points - deductPos > 0)
+            switch (caseSwitch)
             {
-                switch (caseSwitch)
-                {
-                    case "feedNeg":
+                case "feedNeg":
+                    if ((points - deductNeg) >= 0)
+                    {
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
-                        ToggleInfoboxShort(FoodInfoMeatShort);
-                        break;
-                    case "feedPos":
+                        if (infoboxCount[0] < 2)
+                        {
+                            ToggleInfoboxShort(FoodInfoMeatShort);
+                            infoboxCount[0] = infoboxCount[0] + 1;
+                        }
+                    }
+                    break;
+                case "feedPos":
+                    if ((points - deductPos) >= 0)
+                    {
                         points -= deductPos;
                         dayScore += 0.03f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
-                        ToggleInfoboxShort(FoodInfoPlantShort);
-                        break;
-                    case "hygNeg":
+                        if (infoboxCount[1] < 2)
+                        {
+                            ToggleInfoboxShort(FoodInfoPlantShort);
+                            infoboxCount[1] = infoboxCount[1] + 1;
+                        }
+                    }
+                    break;
+                case "hygNeg":
+                    if ((points - deductNeg) >= 0)
+                    {
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         setAnim("shake", true);
-                        ToggleInfoboxShort(HygeineInfoComShort);
-                        break;
-                    case "hygPos":
+                        if (infoboxCount[2] < 2)
+                        {
+                            ToggleInfoboxShort(HygeineInfoComShort);
+                            infoboxCount[2] = infoboxCount[2] + 1;
+                        }
+                    }
+                    break;
+                case "hygPos":
+                    if ((points - deductPos) >= 0)
+                    {
                         points -= deductPos;
                         dayScore += 0.03f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("shake", true);
-                        ToggleInfoboxShort(HygeineInfoEcoShort);
-                        break;
-                    case "exerNeg":
+                        if (infoboxCount[3] < 2)
+                        {
+                            ToggleInfoboxShort(HygeineInfoEcoShort);
+                            infoboxCount[3] = infoboxCount[3] + 1;
+                        }
+                    }
+                    break;
+                case "exerNeg":
+                    if ((points - deductNeg) >= 0)
+                    {
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
                         setAnim("sit", true);
-                        ToggleInfoboxShort(ExerInfoCarShort);
-                        break;
-                    case "exerPos":
+                        if (infoboxCount[4] < 2)
+                        {
+                            ToggleInfoboxShort(ExerInfoCarShort);
+                            infoboxCount[4] = infoboxCount[4] + 1;
+                        }
+                    }
+                    break;
+                case "exerPos":
+                    if ((points - deductPos) >= 0)
+                    {
                         points -= deductPos;
                         dayScore += 0.03f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("run", true);
-                        ToggleInfoboxShort(ExerInfoWalkShort);
-                        break;
-                    default: break;
-                }
+                        if (infoboxCount[5] < 2)
+                        {
+                            ToggleInfoboxShort(ExerInfoWalkShort);
+                            infoboxCount[5] = infoboxCount[5] + 1;
+                        }
+                    }
+                    break;
+                default: break;
             }
-            else { return; }
         }
 
         public void nextDay()
@@ -666,7 +705,7 @@ namespace GoogleARCore.Examples.HelloAR
         public void ToggleInfoboxShort(GameObject gameObject)
         {
             CurrentInfobox = gameObject;
-            infoboxTimer = 3f;
+            infoboxTimer = 6f;
             animateInfobox = true;
         }
 
