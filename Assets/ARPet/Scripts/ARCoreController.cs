@@ -77,7 +77,12 @@ namespace GoogleARCore.Examples.HelloAR
         private bool switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
         public float animSpeed;
         public GameObject UIHandle, UIFeedPane, UIMainPane, UIExercisePane, UIHygeinePane, UIPoints, UI;
-        private Text PointsText;
+        private Text PointsText, happylifeTextContent;
+        private GameObject happylifeText;
+        private float happyTextBegin, happyTextEnd, lifeTextBegin, lifeTextEnd;
+        private bool happyTextAnimate, lifeTextAnimate;
+        private float happylifeTimer;
+        private bool nextdayPressed;
 
         [Header("Infoboxes")]
         //Infobox variables
@@ -151,6 +156,11 @@ namespace GoogleARCore.Examples.HelloAR
             switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
             fPaneActive = ePaneActive = hPaneActive = false;
             PointsText = UIPoints.GetComponent<Text>();
+            happylifeText = GameObject.FindGameObjectWithTag("happylifeText");
+            happylifeTextContent = happylifeText.GetComponent<Text>();
+            happyTextBegin = 22f; happyTextEnd = 45f;
+            lifeTextBegin = -8f; lifeTextEnd = -40f;
+            happylifeTextContent.color = new Color(0, 0, 0, 0);
 
             //"Points" initialization
             deductNeg = 2;
@@ -385,6 +395,28 @@ namespace GoogleARCore.Examples.HelloAR
                 }
             }
 
+            if (happyTextAnimate)
+            {
+                happylifeText.transform.localPosition = new Vector3(0, happyTextBegin, 0);
+                happylifeTimer -= Time.deltaTime;
+                if (happylifeTimer < 0)
+                {
+                    happylifeTextContent.color = new Color(0, 0, 0, 0);
+                    happyTextAnimate = false;
+                }
+            }
+
+            if (lifeTextAnimate)
+            {
+                happylifeText.transform.localPosition = new Vector3(0, lifeTextBegin, 0);
+                happylifeTimer -= Time.deltaTime;
+                if (happylifeTimer < 0)
+                {
+                    happylifeTextContent.color = new Color(0, 0, 0, 0);
+                    happyTextAnimate = false;
+                }
+            }
+
 
             //Pet animation section
             if (animActive)
@@ -499,13 +531,18 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(FoodInfoMeatShort);
                             infoboxCount[0] = infoboxCount[0] + 1;
                         }
+                        happylifeTimer = 1.5f;
+                        happyTextAnimate = true;
+                        happylifeTextContent.color = new Color(0, 1, 0, 1);
+                        happylifeTextContent.text = "+1";
+
                     }
                     break;
                 case "feedPos":
                     if ((points - deductPos) >= 0)
                     {
                         points -= deductPos;
-                        dayScore += 0.03f;
+                        dayScore += 0.05f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
@@ -514,6 +551,10 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(FoodInfoPlantShort);
                             infoboxCount[1] = infoboxCount[1] + 1;
                         }
+                        happylifeTimer = 1.5f;
+                        happyTextAnimate = true;
+                        happylifeTextContent.color = new Color(0, 1, 0, 1);
+                        happylifeTextContent.text = "+2";
                     }
                     break;
                 case "hygNeg":
@@ -528,13 +569,18 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(HygeineInfoComShort);
                             infoboxCount[2] = infoboxCount[2] + 1;
                         }
+                        happylifeTimer = 1.5f;
+                        happyTextAnimate = true;
+                        happylifeTextContent.color = new Color(0, 1, 0, 1);
+                        happylifeTextContent.text = "+1";
+
                     }
                     break;
                 case "hygPos":
                     if ((points - deductPos) >= 0)
                     {
                         points -= deductPos;
-                        dayScore += 0.03f;
+                        dayScore += 0.05f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("shake", true);
                         if (infoboxCount[3] < 2)
@@ -542,6 +588,10 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(HygeineInfoEcoShort);
                             infoboxCount[3] = infoboxCount[3] + 1;
                         }
+                        happylifeTimer = 1.5f;
+                        happyTextAnimate = true;
+                        happylifeTextContent.color = new Color(0, 1, 0, 1);
+                        happylifeTextContent.text = "+2";
                     }
                     break;
                 case "exerNeg":
@@ -556,13 +606,17 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(ExerInfoCarShort);
                             infoboxCount[4] = infoboxCount[4] + 1;
                         }
+                        happylifeTimer = 1.5f;
+                        happyTextAnimate = true;
+                        happylifeTextContent.color = new Color(0, 1, 0, 1);
+                        happylifeTextContent.text = "+1";
                     }
                     break;
                 case "exerPos":
                     if ((points - deductPos) >= 0)
                     {
                         points -= deductPos;
-                        dayScore += 0.03f;
+                        dayScore += 0.05f;
                         statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
                         setAnim("run", true);
                         if (infoboxCount[5] < 2)
@@ -570,6 +624,10 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(ExerInfoWalkShort);
                             infoboxCount[5] = infoboxCount[5] + 1;
                         }
+                        happylifeTimer = 1.5f;
+                        happyTextAnimate = true;
+                        happylifeTextContent.color = new Color(0, 1, 0, 1);
+                        happylifeTextContent.text = "+2";
                     }
                     break;
                 default: break;
@@ -578,11 +636,27 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void nextDay()
         {
-            float lifeScore = 0.1f - dayScore;
+            nextdayPressed = true;
+
+            float lifeScore = 0.08f;
+            statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
+            statLifeExpect.transform.localScale += new Vector3(dayScore, 0f, 0f);
+            Debug.Log("Dayscore: " + dayScore + " | " + "Lifescore: " + lifeScore + " | " + "Difference: " + (lifeScore - dayScore));
             dayScore = 0f;
             points = 10;
-            statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
-            statHappiness.transform.localScale -= new Vector3(0.2f, 0f, 0f);
+            happylifeTimer = 2.5f;
+            lifeTextAnimate = true;
+            if (lifeScore < dayScore)
+            {
+                happylifeTextContent.color = new Color(0, 1, 0, 1);
+                happylifeTextContent.text = "+" + lifeScore * 10;
+            }
+            if (lifeScore > dayScore)
+            {
+                happylifeTextContent.color = new Color(1, 0, 0, 1);
+                happylifeTextContent.text = "-" + lifeScore * 10;
+            }
+
         }
 
         public void ToggleInfoMenu()
@@ -751,7 +825,8 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Instantiate Andy model at the hit pose.
                     petModel = (GameObject)Instantiate(prefab, hit.Pose.position, hit.Pose.rotation);
-                    statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
+                    //statsAnchor = (GameObject)Instantiate(statsPrefab, hit.Pose.position, hit.Pose.rotation);
+
 
                     anim = GameObject.FindGameObjectWithTag("Pet").GetComponent<Animator>();
                     pet = GameObject.FindGameObjectWithTag("Pet");
@@ -769,8 +844,9 @@ namespace GoogleARCore.Examples.HelloAR
 
                     // Make Andy model a child of the anchor.
                     petModel.transform.parent = anchor.transform;
-                    statsAnchor.transform.parent = anchor.transform;
-                    statsAnchor.transform.Translate(0.30f, 0.60f, 0.35f);
+                    statsPrefab.transform.position = anchor.transform.position;
+                    statsPrefab.transform.parent = anchor.transform;
+                    statsPrefab.transform.Translate(new Vector3(0.029f, 0.676f, -0.088f));
 
                     UI.SetActive(true);
                     statHappiness.transform.localScale -= new Vector3(0.5f, 0f, 0f);
