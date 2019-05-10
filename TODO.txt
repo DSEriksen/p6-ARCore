@@ -4,9 +4,9 @@ Adjustsments:
 	Cut sound appropiately
 
 Features:
-	+ and - signs with numbers at happiness and lifeexpect
-	New button graphics	
-	More lighting
+	DONE | + and - signs with numbers at happiness and lifeexpect
+	DONE | New button graphics	
+	DONE | Directional light (for better light on dog)
 	
 	New scene without AR camera
 

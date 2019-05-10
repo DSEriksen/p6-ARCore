@@ -83,6 +83,8 @@ namespace GoogleARCore.Examples.HelloAR
         private bool happyTextAnimate, lifeTextAnimate;
         private float happylifeTimer;
         private bool nextdayPressed;
+        private bool infoboxIsCounting = false;
+        public Button nextDayButton;
 
         [Header("Infoboxes")]
         //Infobox variables
@@ -199,6 +201,13 @@ namespace GoogleARCore.Examples.HelloAR
                 {
                     statLifeExpect.transform.localScale = new Vector3(1f, 1f, 1f);
                 }
+            }
+
+            if (points == 0){
+                nextDayButton.interactable = true;
+            }
+            else{
+                nextDayButton.interactable = false;
             }
 
             //UI animation section
@@ -367,7 +376,7 @@ namespace GoogleARCore.Examples.HelloAR
 
 
             //infobox animation
-            if (animateInfobox && !infoboxIsDown)
+            if (animateInfobox && !infoboxIsDown && !infoboxIsCounting)
             {
                 CurrentInfobox.transform.Translate(new Vector3(0, -animSpeed, 0));
                 if (CurrentInfobox.transform.localPosition.y <= infoboxDown)
@@ -376,7 +385,7 @@ namespace GoogleARCore.Examples.HelloAR
                     animateInfobox = false;
                 }
             }
-            if (animateInfobox && infoboxIsDown)
+            if (animateInfobox && infoboxIsDown && !infoboxIsCounting)
             {
                 CurrentInfobox.transform.Translate(new Vector3(0, animSpeed, 0));
                 if (CurrentInfobox.transform.localPosition.y >= infoboxUp)
@@ -387,14 +396,17 @@ namespace GoogleARCore.Examples.HelloAR
             }
 
             if (infoboxIsDown)
-            {
+            {   
+                infoboxIsCounting = true;
                 infoboxTimer -= Time.deltaTime;
                 if (infoboxTimer < 0)
                 {
+                    infoboxIsCounting = false;
                     animateInfobox = true;
                 }
             }
-
+            
+            //Stat change number animation
             if (happyTextAnimate)
             {
                 happylifeText.transform.localPosition = new Vector3(0, happyTextBegin, 0);
@@ -681,6 +693,7 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void ToggleInfoBox(string caseswitch)
         {
+           
             switch (caseswitch)
             {
                 case "food-meat":
@@ -781,6 +794,10 @@ namespace GoogleARCore.Examples.HelloAR
             CurrentInfobox = gameObject;
             infoboxTimer = 6f;
             animateInfobox = true;
+        }
+
+        public void RemoveInfoboxShort(GameObject gameObject){
+            gameObject.transform.localPosition = new Vector3(0, infoboxUp, 0);
         }
 
         private void SpawnPet()
