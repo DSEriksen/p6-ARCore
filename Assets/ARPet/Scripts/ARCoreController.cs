@@ -85,6 +85,8 @@ namespace GoogleARCore.Examples.HelloAR
         private bool nextdayPressed;
         private bool infoboxIsCounting = false;
         public Button nextDayButton;
+        public Sprite handleUpSprite;
+        public Sprite handleDownSprite;
 
         [Header("Infoboxes")]
         //Infobox variables
@@ -163,6 +165,7 @@ namespace GoogleARCore.Examples.HelloAR
             happyTextBegin = 22f; happyTextEnd = 45f;
             lifeTextBegin = -8f; lifeTextEnd = -40f;
             happylifeTextContent.color = new Color(0, 0, 0, 0);
+            UIHandle.gameObject.GetComponent<Image>().sprite = handleUpSprite;
 
             //"Points" initialization
             deductNeg = 2;
@@ -215,6 +218,7 @@ namespace GoogleARCore.Examples.HelloAR
 
             if (animateHandle && !hidingUI)
             {
+                UIHandle.gameObject.GetComponent<Image>().sprite = handleDownSprite;
                 UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0), Space.World);
                 if (UIHandle.transform.localPosition.y <= uiHandleDown)
                 {
@@ -224,6 +228,7 @@ namespace GoogleARCore.Examples.HelloAR
             }
             if (animateHandle && hidingUI)
             {
+                UIHandle.gameObject.GetComponent<Image>().sprite = handleUpSprite;
                 UIHandle.transform.Translate(new Vector3(0, animSpeed, 0));
                 if (UIHandle.transform.localPosition.y >= uiHandleUp)
                 {

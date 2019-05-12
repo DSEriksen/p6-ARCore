@@ -2943,6 +2943,8 @@ MonoBehaviour:
   UIPoints: {fileID: 635482407}
   UI: {fileID: 2690955169012711343}
   nextDayButton: {fileID: 1652808538}
+  handleUpSprite: {fileID: 21300000, guid: 787bc5aec53bd5747815c610024a05b3, type: 3}
+  handleDownSprite: {fileID: 21300000, guid: 59b28081f51534049ba92c0fcf7d5156, type: 3}
   InfoMenu: {fileID: 2045849366}
   FoodInfoMeat: {fileID: 519446638}
   FoodInfoPlant: {fileID: 1642084740}
@@ -5095,7 +5097,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 36.17218, y: 757.9288}
-  m_SizeDelta: {x: 101, y: 102}
+  m_SizeDelta: {x: 100.4, y: 189.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1124850835
 MonoBehaviour:
@@ -5170,7 +5172,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: af88528bbf55a2f47aef704198d069b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 787bc5aec53bd5747815c610024a05b3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
