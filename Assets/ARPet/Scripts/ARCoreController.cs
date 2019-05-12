@@ -654,21 +654,21 @@ namespace GoogleARCore.Examples.HelloAR
             statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
             statLifeExpect.transform.localScale += new Vector3(dayScore, 0f, 0f);
             Debug.Log("Dayscore: " + dayScore + " | " + "Lifescore: " + lifeScore + " | " + "Difference: " + (lifeScore - dayScore));
-            dayScore = 0f;
+           
             points = 10;
             happylifeTimer = 2.5f;
             lifeTextAnimate = true;
             if (lifeScore < dayScore)
             {
                 happylifeTextContent.color = new Color(0, 1, 0, 1);
-                happylifeTextContent.text = "+" + lifeScore * 10;
+                happylifeTextContent.text = "+" + (lifeScore-dayScore) * 10;
             }
             if (lifeScore > dayScore)
             {
                 happylifeTextContent.color = new Color(1, 0, 0, 1);
-                happylifeTextContent.text = "-" + lifeScore * 10;
+                happylifeTextContent.text = "-" + (lifeScore-dayScore) * 10;
             }
-
+            dayScore = 0f;
         }
 
         public void ToggleInfoMenu()
@@ -676,17 +676,12 @@ namespace GoogleARCore.Examples.HelloAR
 
             if (!infoMenuActive)
             {
-                //UI.SetActive(false);
                 InfoMenu.SetActive(true);
-                //pet.SetActive(false);
                 infoMenuActive = true;
             }
-
             else
             {
-                //UI.SetActive(true);
                 InfoMenu.SetActive(false);
-                //pet.SetActive(true);
                 infoMenuActive = false;
             }
         }
