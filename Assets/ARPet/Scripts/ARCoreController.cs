@@ -85,8 +85,10 @@ namespace GoogleARCore.Examples.HelloAR
         private bool nextdayPressed;
         private bool infoboxIsCounting = false;
         public Button nextDayButton;
+        public Button handleButton;
         public Sprite handleUpSprite;
         public Sprite handleDownSprite;
+        private Image handlebarImage;
 
         [Header("Infoboxes")]
         //Infobox variables
@@ -151,7 +153,7 @@ namespace GoogleARCore.Examples.HelloAR
             UI.SetActive(false);
             animateHandle = false;
             hidingUI = false;
-            uiHandleUp = -1516f; uiHandleDown = -1787f;
+            uiHandleUp = -1516f; uiHandleDown = -1786f;
             uiMPaneUp = 725f; uiMPaneDown = 485f;
             //TODO: make these 1 variable
             uiFPaneUp = -89f; uiFPaneDown = -334;
@@ -165,7 +167,8 @@ namespace GoogleARCore.Examples.HelloAR
             happyTextBegin = 22f; happyTextEnd = 45f;
             lifeTextBegin = -8f; lifeTextEnd = -40f;
             happylifeTextContent.color = new Color(0, 0, 0, 0);
-            UIHandle.gameObject.GetComponent<Image>().sprite = handleUpSprite;
+            handlebarImage = handleButton.GetComponent<Image>();
+            handlebarImage.sprite = handleUpSprite;
 
             //"Points" initialization
             deductNeg = 2;
@@ -218,7 +221,7 @@ namespace GoogleARCore.Examples.HelloAR
 
             if (animateHandle && !hidingUI)
             {
-                UIHandle.gameObject.GetComponent<Image>().sprite = handleDownSprite;
+                handlebarImage.sprite = handleDownSprite;
                 UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0), Space.World);
                 if (UIHandle.transform.localPosition.y <= uiHandleDown)
                 {
@@ -228,7 +231,7 @@ namespace GoogleARCore.Examples.HelloAR
             }
             if (animateHandle && hidingUI)
             {
-                UIHandle.gameObject.GetComponent<Image>().sprite = handleUpSprite;
+                handlebarImage.sprite = handleUpSprite;
                 UIHandle.transform.Translate(new Vector3(0, animSpeed, 0));
                 if (UIHandle.transform.localPosition.y >= uiHandleUp)
                 {

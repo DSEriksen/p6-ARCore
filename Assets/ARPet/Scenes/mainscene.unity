@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2943,6 +2943,7 @@ MonoBehaviour:
   UIPoints: {fileID: 635482407}
   UI: {fileID: 2690955169012711343}
   nextDayButton: {fileID: 1652808538}
+  handleButton: {fileID: 1124850835}
   handleUpSprite: {fileID: 21300000, guid: 787bc5aec53bd5747815c610024a05b3, type: 3}
   handleDownSprite: {fileID: 21300000, guid: 59b28081f51534049ba92c0fcf7d5156, type: 3}
   InfoMenu: {fileID: 2045849366}
@@ -3659,7 +3660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &731585108
 Transform:
   m_ObjectHideFlags: 0
