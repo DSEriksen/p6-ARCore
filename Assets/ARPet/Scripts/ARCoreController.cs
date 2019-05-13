@@ -26,6 +26,7 @@ namespace GoogleARCore.Examples.HelloAR
     using UnityEngine;
     using UnityEngine.SceneManagement;
     using UnityEngine.UI;
+    using System;
 
 #if UNITY_EDITOR
     // Set up touch input propagation while using Instant Preview in the editor.
@@ -82,6 +83,8 @@ namespace GoogleARCore.Examples.HelloAR
         private float happyTextBegin, happyTextEnd, lifeTextBegin, lifeTextEnd;
         private bool happyTextAnimate, lifeTextAnimate;
         private float happylifeTimer;
+        private float posHappiness = 0.1f;
+        private float negHappiness = 0.02f;
         private bool nextdayPressed;
         private bool infoboxIsCounting = false;
         public Button nextDayButton;
@@ -89,6 +92,7 @@ namespace GoogleARCore.Examples.HelloAR
         public Sprite handleUpSprite;
         public Sprite handleDownSprite;
         private Image handlebarImage;
+        public GameObject gameoverScreen;
 
         [Header("Infoboxes")]
         //Infobox variables
@@ -169,6 +173,7 @@ namespace GoogleARCore.Examples.HelloAR
             happylifeTextContent.color = new Color(0, 0, 0, 0);
             handlebarImage = handleButton.GetComponent<Image>();
             handlebarImage.sprite = handleUpSprite;
+            gameoverScreen.SetActive(false);
 
             //"Points" initialization
             deductNeg = 2;
@@ -206,6 +211,10 @@ namespace GoogleARCore.Examples.HelloAR
                 if (statLifeExpect.transform.localScale.x >= 1f)
                 {
                     statLifeExpect.transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+
+                if (statHappiness.transform.localScale.x <= 0 || statLifeExpect.transform.localScale.x <= 0){
+                    gameoverScreen.SetActive(true);
                 }
             }
 
@@ -536,6 +545,7 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void changeStat(string caseSwitch)
         {
+            happylifeText.transform.localPosition = new Vector3(0, happyTextBegin, 0);
             switch (caseSwitch)
             {
                 case "feedNeg":
@@ -543,7 +553,7 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         points -= deductNeg;
                         dayScore += 0.01f;
-                        statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
                         if (infoboxCount[0] < 2)
@@ -563,7 +573,7 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         points -= deductPos;
                         dayScore += 0.05f;
-                        statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
                         if (infoboxCount[1] < 2)
@@ -582,7 +592,7 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         points -= deductNeg;
                         dayScore += 0.01f;
-                        statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
                         setAnim("shake", true);
                         if (infoboxCount[2] < 2)
                         {
@@ -601,7 +611,7 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         points -= deductPos;
                         dayScore += 0.05f;
-                        statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
                         setAnim("shake", true);
                         if (infoboxCount[3] < 2)
                         {
@@ -619,7 +629,7 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         points -= deductNeg;
                         dayScore += 0.01f;
-                        statHappiness.transform.localScale += new Vector3(0.1f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
                         setAnim("sit", true);
                         if (infoboxCount[4] < 2)
                         {
@@ -637,7 +647,7 @@ namespace GoogleARCore.Examples.HelloAR
                     {
                         points -= deductPos;
                         dayScore += 0.05f;
-                        statHappiness.transform.localScale += new Vector3(0.2f, 0f, 0f);
+                        statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
                         setAnim("run", true);
                         if (infoboxCount[5] < 2)
                         {
@@ -659,6 +669,9 @@ namespace GoogleARCore.Examples.HelloAR
             nextdayPressed = true;
 
             float lifeScore = 0.08f;
+            lifeScore = lifeScore*10;
+            dayScore = dayScore*10;
+            statHappiness.transform.localScale -= new Vector3(0.2f, 0f,0f);
             statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
             statLifeExpect.transform.localScale += new Vector3(dayScore, 0f, 0f);
             Debug.Log("Dayscore: " + dayScore + " | " + "Lifescore: " + lifeScore + " | " + "Difference: " + (lifeScore - dayScore));
@@ -669,12 +682,16 @@ namespace GoogleARCore.Examples.HelloAR
             if (lifeScore < dayScore)
             {
                 happylifeTextContent.color = new Color(0, 1, 0, 1);
-                happylifeTextContent.text = "+" + (lifeScore-dayScore) * 10;
+                happylifeTextContent.text = "+" + System.Math.Round(Mathf.Abs((lifeScore-dayScore) * 10),1);
             }
             if (lifeScore > dayScore)
             {
                 happylifeTextContent.color = new Color(1, 0, 0, 1);
-                happylifeTextContent.text = "-" + (lifeScore-dayScore) * 10;
+                happylifeTextContent.text = "-" + System.Math.Round((lifeScore-dayScore) * 10,1);
+            }
+            if (lifeScore == dayScore){
+                happylifeTextContent.color = new Color(1, 1, 0, 1);
+                happylifeTextContent.text = "0";
             }
             dayScore = 0f;
         }
@@ -862,10 +879,11 @@ namespace GoogleARCore.Examples.HelloAR
                     // world evolves.
                     anchor = (Anchor)hit.Trackable.CreateAnchor(hit.Pose);
 
-                    // Make Andy model a child of the anchor.
+                    // Child the pet to the anchor, and place the stats according to the pet
                     petModel.transform.parent = anchor.transform;
-                    statsPrefab.transform.position = anchor.transform.position;
-                    statsPrefab.transform.parent = anchor.transform;
+                    statsPrefab.transform.position = petModel.transform.position;
+                    statsPrefab.transform.rotation = petModel.transform.rotation;
+                    statsPrefab.transform.Rotate(new Vector3(0f, 180f, 0f));
                     statsPrefab.transform.Translate(new Vector3(0.029f, 0.676f, -0.088f));
 
                     UI.SetActive(true);
