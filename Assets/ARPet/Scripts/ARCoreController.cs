@@ -62,7 +62,7 @@ namespace GoogleARCore.Examples.HelloAR
         private GameObject petModel;
         private Anchor anchor;
 
-        [Header("Stats")]
+        [Header("UI")]
         //Stats variables
         public GameObject statsPrefab;
         private GameObject statsAnchor;
@@ -70,6 +70,7 @@ namespace GoogleARCore.Examples.HelloAR
 
         [Header("UI")]
         //UI variables
+        public bool isOneplus5t;
         private bool hidingUI, animateHandle;
         private float uiHandleUp, uiHandleDown;
         private bool fPaneActive, switchingToFPane, animateFPane; private float uiFPaneUp, uiFPaneDown;
@@ -93,6 +94,8 @@ namespace GoogleARCore.Examples.HelloAR
         public Sprite handleDownSprite;
         private Image handlebarImage;
         public GameObject gameoverScreen;
+        public GameObject infoButton;
+
 
         [Header("Infoboxes")]
         //Infobox variables
@@ -157,12 +160,11 @@ namespace GoogleARCore.Examples.HelloAR
             UI.SetActive(false);
             animateHandle = false;
             hidingUI = false;
-            uiHandleUp = -1516f; uiHandleDown = -1786f;
             uiMPaneUp = 725f; uiMPaneDown = 485f;
-            //TODO: make these 1 variable
             uiFPaneUp = -89f; uiFPaneDown = -334;
             uiEPaneUp = -89f; uiEPaneDown = -334;
             uiHPaneUp = -89f; uiHPaneDown = -334;
+
             switchingToFPane = switchingToEPane = switchingToHPane = switchingToMPane = false;
             fPaneActive = ePaneActive = hPaneActive = false;
             PointsText = UIPoints.GetComponent<Text>();
@@ -174,6 +176,17 @@ namespace GoogleARCore.Examples.HelloAR
             handlebarImage = handleButton.GetComponent<Image>();
             handlebarImage.sprite = handleUpSprite;
             gameoverScreen.SetActive(false);
+
+            if (isOneplus5t){
+                infoButton.transform.localPosition = new Vector3(-437, 973, 0);
+                uiHandleUp = -1516f; uiHandleDown = -1736f;
+                UIHandle.transform.localPosition = new Vector3(-35, uiHandleUp, 0);
+            }
+            else if (!isOneplus5t){
+                infoButton.transform.localPosition = new Vector3(-437, 853, 0);
+                uiHandleUp = -1403f; uiHandleDown = -1618f;
+                UIHandle.transform.localPosition = new Vector3(-35, uiHandleUp, 0);
+            }
 
             //"Points" initialization
             deductNeg = 2;
@@ -213,15 +226,18 @@ namespace GoogleARCore.Examples.HelloAR
                     statLifeExpect.transform.localScale = new Vector3(1f, 1f, 1f);
                 }
 
-                if (statHappiness.transform.localScale.x <= 0 || statLifeExpect.transform.localScale.x <= 0){
+                if (statHappiness.transform.localScale.x <= 0 || statLifeExpect.transform.localScale.x <= 0)
+                {
                     gameoverScreen.SetActive(true);
                 }
             }
 
-            if (points == 0){
+            if (points == 0)
+            {
                 nextDayButton.interactable = true;
             }
-            else{
+            else
+            {
                 nextDayButton.interactable = false;
             }
 
@@ -231,7 +247,7 @@ namespace GoogleARCore.Examples.HelloAR
             if (animateHandle && !hidingUI)
             {
                 handlebarImage.sprite = handleDownSprite;
-                UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0), Space.World);
+                UIHandle.transform.Translate(new Vector3(0, -animSpeed, 0));
                 if (UIHandle.transform.localPosition.y <= uiHandleDown)
                 {
                     animateHandle = false;
@@ -413,7 +429,7 @@ namespace GoogleARCore.Examples.HelloAR
             }
 
             if (infoboxIsDown)
-            {   
+            {
                 infoboxIsCounting = true;
                 infoboxTimer -= Time.deltaTime;
                 if (infoboxTimer < 0)
@@ -422,7 +438,7 @@ namespace GoogleARCore.Examples.HelloAR
                     animateInfobox = true;
                 }
             }
-            
+
             //Stat change number animation
             if (happyTextAnimate)
             {
@@ -669,27 +685,28 @@ namespace GoogleARCore.Examples.HelloAR
             nextdayPressed = true;
 
             float lifeScore = 0.08f;
-            lifeScore = lifeScore*10;
-            dayScore = dayScore*10;
-            statHappiness.transform.localScale -= new Vector3(0.2f, 0f,0f);
+            lifeScore = lifeScore * 10;
+            dayScore = dayScore * 10;
+            statHappiness.transform.localScale -= new Vector3(0.2f, 0f, 0f);
             statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
             statLifeExpect.transform.localScale += new Vector3(dayScore, 0f, 0f);
             Debug.Log("Dayscore: " + dayScore + " | " + "Lifescore: " + lifeScore + " | " + "Difference: " + (lifeScore - dayScore));
-           
+
             points = 10;
             happylifeTimer = 2.5f;
             lifeTextAnimate = true;
             if (lifeScore < dayScore)
             {
                 happylifeTextContent.color = new Color(0, 1, 0, 1);
-                happylifeTextContent.text = "+" + System.Math.Round(Mathf.Abs((lifeScore-dayScore) * 10),1);
+                happylifeTextContent.text = "+" + System.Math.Round(Mathf.Abs((lifeScore - dayScore) * 10), 1);
             }
             if (lifeScore > dayScore)
             {
                 happylifeTextContent.color = new Color(1, 0, 0, 1);
-                happylifeTextContent.text = "-" + System.Math.Round((lifeScore-dayScore) * 10,1);
+                happylifeTextContent.text = "-" + System.Math.Round((lifeScore - dayScore) * 10, 1);
             }
-            if (lifeScore == dayScore){
+            if (lifeScore == dayScore)
+            {
                 happylifeTextContent.color = new Color(1, 1, 0, 1);
                 happylifeTextContent.text = "0";
             }
@@ -713,7 +730,7 @@ namespace GoogleARCore.Examples.HelloAR
 
         public void ToggleInfoBox(string caseswitch)
         {
-           
+
             switch (caseswitch)
             {
                 case "food-meat":
@@ -816,7 +833,8 @@ namespace GoogleARCore.Examples.HelloAR
             animateInfobox = true;
         }
 
-        public void RemoveInfoboxShort(GameObject gameObject){
+        public void RemoveInfoboxShort(GameObject gameObject)
+        {
             gameObject.transform.localPosition = new Vector3(0, infoboxUp, 0);
         }
 

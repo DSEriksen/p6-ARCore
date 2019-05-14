@@ -1396,7 +1396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -437, y: 977}
+  m_AnchoredPosition: {x: -437, y: 973}
   m_SizeDelta: {x: 160, y: 224.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &182843396
@@ -3054,6 +3054,7 @@ MonoBehaviour:
   petPointPrefab: {fileID: 4737971509636296694, guid: dc52e2f26c5304848b1442cc1d787510,
     type: 3}
   statsPrefab: {fileID: 7406628311380051470}
+  isOneplus5t: 1
   animSpeed: 50
   UIHandle: {fileID: 628111842}
   UIFeedPane: {fileID: 1500885968}
@@ -3067,6 +3068,7 @@ MonoBehaviour:
   handleUpSprite: {fileID: 21300000, guid: 787bc5aec53bd5747815c610024a05b3, type: 3}
   handleDownSprite: {fileID: 21300000, guid: 59b28081f51534049ba92c0fcf7d5156, type: 3}
   gameoverScreen: {fileID: 354215173}
+  infoButton: {fileID: 182843394}
   InfoMenu: {fileID: 2045849366}
   FoodInfoMeat: {fileID: 519446638}
   FoodInfoPlant: {fileID: 1642084740}
@@ -3114,7 +3116,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 628111842}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -35.17218, y: -1516, z: -73.420044}
+  m_LocalPosition: {x: -35.17218, y: -1511, z: -73.420044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1124850834}
