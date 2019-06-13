@@ -117,7 +117,7 @@ namespace GoogleARCore.Examples.HelloAR
         private string currentInfoScreen;
         private bool animateInfobox;
         private bool infoboxIsDown;
-        private float infoboxUp = 413f;
+        private float infoboxUp = 450f;
         private float infoboxDown = 50f;
         private GameObject CurrentInfobox;
         private float infoboxTimer;
