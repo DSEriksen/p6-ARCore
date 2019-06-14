@@ -79,13 +79,15 @@ namespace GoogleARCore.Examples.HelloAR
         private bool switchingToMPane, animateMPane; private float uiMPaneUp, uiMPaneDown;
         public float animSpeed;
         public GameObject UIHandle, UIFeedPane, UIMainPane, UIExercisePane, UIHygeinePane, UIPoints, UI;
-        private Text PointsText, happylifeTextContent;
-        private GameObject happylifeText;
+        private Text PointsText, happylifeTextContent, lifeexpectTextContent;
+        private GameObject happylifeText, lifeexpectText;
         private float happyTextBegin, happyTextEnd, lifeTextBegin, lifeTextEnd;
         private bool happyTextAnimate, lifeTextAnimate;
-        private float happylifeTimer;
+        private float happyTimer, lifeTimer;
         private float posHappiness = 0.1f;
         private float negHappiness = 0.02f;
+        private float negLifeexpect = 0.1f;
+        private float posLifeexpect = 0.1f;
         private bool nextdayPressed;
         private bool infoboxIsCounting = false;
         public Button nextDayButton;
@@ -170,19 +172,24 @@ namespace GoogleARCore.Examples.HelloAR
             PointsText = UIPoints.GetComponent<Text>();
             happylifeText = GameObject.FindGameObjectWithTag("happylifeText");
             happylifeTextContent = happylifeText.GetComponent<Text>();
-            happyTextBegin = 22f; happyTextEnd = 45f;
-            lifeTextBegin = -8f; lifeTextEnd = -40f;
+            lifeexpectText = GameObject.FindGameObjectWithTag("lifeexpectText");
+            lifeexpectTextContent = lifeexpectText.GetComponent<Text>();
+            happyTextBegin = 19.9f;
+            lifeTextBegin = -12.4f;
             happylifeTextContent.color = new Color(0, 0, 0, 0);
+            lifeexpectTextContent.color = new Color(0, 0, 0, 0);
             handlebarImage = handleButton.GetComponent<Image>();
             handlebarImage.sprite = handleUpSprite;
             gameoverScreen.SetActive(false);
 
-            if (isOneplus5t){
+            if (isOneplus5t)
+            {
                 infoButton.transform.localPosition = new Vector3(-437, 973, 0);
                 uiHandleUp = -1516f; uiHandleDown = -1736f;
                 UIHandle.transform.localPosition = new Vector3(-35, uiHandleUp, 0);
             }
-            else if (!isOneplus5t){
+            else if (!isOneplus5t)
+            {
                 infoButton.transform.localPosition = new Vector3(-437, 853, 0);
                 uiHandleUp = -1403f; uiHandleDown = -1618f;
                 UIHandle.transform.localPosition = new Vector3(-35, uiHandleUp, 0);
@@ -443,8 +450,8 @@ namespace GoogleARCore.Examples.HelloAR
             if (happyTextAnimate)
             {
                 happylifeText.transform.localPosition = new Vector3(0, happyTextBegin, 0);
-                happylifeTimer -= Time.deltaTime;
-                if (happylifeTimer < 0)
+                happyTimer -= Time.deltaTime;
+                if (happyTimer < 0)
                 {
                     happylifeTextContent.color = new Color(0, 0, 0, 0);
                     happyTextAnimate = false;
@@ -453,12 +460,12 @@ namespace GoogleARCore.Examples.HelloAR
 
             if (lifeTextAnimate)
             {
-                happylifeText.transform.localPosition = new Vector3(0, lifeTextBegin, 0);
-                happylifeTimer -= Time.deltaTime;
-                if (happylifeTimer < 0)
+                lifeexpectText.transform.localPosition = new Vector3(0, lifeTextBegin, 0);
+                lifeTimer -= Time.deltaTime;
+                if (lifeTimer < 0)
                 {
-                    happylifeTextContent.color = new Color(0, 0, 0, 0);
-                    happyTextAnimate = false;
+                    lifeexpectTextContent.color = new Color(0, 0, 0, 0);
+                    lifeTextAnimate = false;
                 }
             }
 
@@ -570,6 +577,7 @@ namespace GoogleARCore.Examples.HelloAR
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
+                        statLifeExpect.transform.localScale -= new Vector3(negLifeexpect, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
                         if (infoboxCount[0] < 2)
@@ -577,10 +585,14 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(FoodInfoMeatShort);
                             infoboxCount[0] = infoboxCount[0] + 1;
                         }
-                        happylifeTimer = 1.5f;
+                        happyTimer = 2.5f;
                         happyTextAnimate = true;
                         happylifeTextContent.color = new Color(0, 1, 0, 1);
                         happylifeTextContent.text = "+1";
+                        lifeTimer = 2.5f;
+                        lifeTextAnimate = true;
+                        lifeexpectTextContent.color = new Color(1, 0, 0, 1);
+                        lifeexpectTextContent.text = "-1";
 
                     }
                     break;
@@ -590,6 +602,7 @@ namespace GoogleARCore.Examples.HelloAR
                         points -= deductPos;
                         dayScore += 0.05f;
                         statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
+                        statLifeExpect.transform.localScale += new Vector3(posLifeexpect, 0f, 0f);
                         setAnim("eat", true);
                         EatParticles.Play();
                         if (infoboxCount[1] < 2)
@@ -597,10 +610,14 @@ namespace GoogleARCore.Examples.HelloAR
                             ToggleInfoboxShort(FoodInfoPlantShort);
                             infoboxCount[1] = infoboxCount[1] + 1;
                         }
-                        happylifeTimer = 1.5f;
+                        happyTimer = 2.5f;
                         happyTextAnimate = true;
                         happylifeTextContent.color = new Color(0, 1, 0, 1);
                         happylifeTextContent.text = "+2";
+                        lifeTextAnimate = true;
+                        lifeTimer = 2.5f;
+                        lifeexpectTextContent.color = new Color(0, 1, 0, 1);
+                        lifeexpectTextContent.text = "+1";
                     }
                     break;
                 case "hygNeg":
@@ -609,16 +626,21 @@ namespace GoogleARCore.Examples.HelloAR
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
+                        statLifeExpect.transform.localScale -= new Vector3(negLifeexpect, 0f, 0f);
                         setAnim("shake", true);
                         if (infoboxCount[2] < 2)
                         {
                             ToggleInfoboxShort(HygeineInfoComShort);
                             infoboxCount[2] = infoboxCount[2] + 1;
                         }
-                        happylifeTimer = 1.5f;
+                        happyTimer = 2.5f;
                         happyTextAnimate = true;
                         happylifeTextContent.color = new Color(0, 1, 0, 1);
                         happylifeTextContent.text = "+1";
+                        lifeTimer = 2.5f;
+                        lifeTextAnimate = true;
+                        lifeexpectTextContent.color = new Color(1, 0, 0, 1);
+                        lifeexpectTextContent.text = "-1";
 
                     }
                     break;
@@ -628,16 +650,21 @@ namespace GoogleARCore.Examples.HelloAR
                         points -= deductPos;
                         dayScore += 0.05f;
                         statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
+                        statLifeExpect.transform.localScale += new Vector3(posLifeexpect, 0f, 0f);
                         setAnim("shake", true);
                         if (infoboxCount[3] < 2)
                         {
                             ToggleInfoboxShort(HygeineInfoEcoShort);
                             infoboxCount[3] = infoboxCount[3] + 1;
                         }
-                        happylifeTimer = 1.5f;
+                        happyTimer = 2.5f;
                         happyTextAnimate = true;
                         happylifeTextContent.color = new Color(0, 1, 0, 1);
                         happylifeTextContent.text = "+2";
+                        lifeTimer = 2.5f;
+                        lifeTextAnimate = true;
+                        lifeexpectTextContent.color = new Color(0, 1, 0, 1);
+                        lifeexpectTextContent.text = "+1";
                     }
                     break;
                 case "exerNeg":
@@ -646,16 +673,21 @@ namespace GoogleARCore.Examples.HelloAR
                         points -= deductNeg;
                         dayScore += 0.01f;
                         statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
+                        statLifeExpect.transform.localScale -= new Vector3(negLifeexpect, 0f, 0f);
                         setAnim("sit", true);
                         if (infoboxCount[4] < 2)
                         {
                             ToggleInfoboxShort(ExerInfoCarShort);
                             infoboxCount[4] = infoboxCount[4] + 1;
                         }
-                        happylifeTimer = 1.5f;
+                        happyTimer = 2.5f;
                         happyTextAnimate = true;
                         happylifeTextContent.color = new Color(0, 1, 0, 1);
                         happylifeTextContent.text = "+1";
+                        lifeTimer = 2.5f;
+                        lifeTextAnimate = true;
+                        lifeexpectTextContent.color = new Color(1, 0, 0, 1);
+                        lifeexpectTextContent.text = "-1";
                     }
                     break;
                 case "exerPos":
@@ -664,16 +696,21 @@ namespace GoogleARCore.Examples.HelloAR
                         points -= deductPos;
                         dayScore += 0.05f;
                         statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
+                        statLifeExpect.transform.localScale += new Vector3(posLifeexpect, 0f, 0f);
                         setAnim("run", true);
                         if (infoboxCount[5] < 2)
                         {
                             ToggleInfoboxShort(ExerInfoWalkShort);
                             infoboxCount[5] = infoboxCount[5] + 1;
                         }
-                        happylifeTimer = 1.5f;
+                        happyTimer = 2.5f;
                         happyTextAnimate = true;
                         happylifeTextContent.color = new Color(0, 1, 0, 1);
                         happylifeTextContent.text = "+2";
+                        lifeTimer = 2.5f;
+                        lifeTextAnimate = true;
+                        lifeexpectTextContent.color = new Color(0, 1, 0, 1);
+                        lifeexpectTextContent.text = "+1";
                     }
                     break;
                 default: break;
@@ -688,13 +725,14 @@ namespace GoogleARCore.Examples.HelloAR
             lifeScore = lifeScore * 10;
             dayScore = dayScore * 10;
             statHappiness.transform.localScale -= new Vector3(0.2f, 0f, 0f);
-            statLifeExpect.transform.localScale -= new Vector3(lifeScore, 0f, 0f);
-            statLifeExpect.transform.localScale += new Vector3(dayScore, 0f, 0f);
             Debug.Log("Dayscore: " + dayScore + " | " + "Lifescore: " + lifeScore + " | " + "Difference: " + (lifeScore - dayScore));
 
             points = 10;
-            happylifeTimer = 2.5f;
-            lifeTextAnimate = true;
+            happyTimer = 2.5f;
+            happyTextAnimate = true;
+            happylifeTextContent.color = new Color(1, 0, 0, 1);
+            happylifeTextContent.text = "-2";
+            /*
             if (lifeScore < dayScore)
             {
                 happylifeTextContent.color = new Color(0, 1, 0, 1);
@@ -707,10 +745,11 @@ namespace GoogleARCore.Examples.HelloAR
             }
             if (lifeScore == dayScore)
             {
-                happylifeTextContent.color = new Color(1, 1, 0, 1);
+                happylifeTextContent.color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 happylifeTextContent.text = "0";
             }
             dayScore = 0f;
+            */
         }
 
         public void ToggleInfoMenu()

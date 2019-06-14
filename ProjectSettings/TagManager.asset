@@ -12,6 +12,7 @@ TagManager:
   - statPoints
   - Mouth
   - happylifeText
+  - lifeexpectText
   layers:
   - Default
   - TransparentFX
