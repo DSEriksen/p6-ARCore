@@ -541,15 +541,14 @@ namespace GoogleARCore.Examples.HelloAR
                         break;
                     case "eat":
                         anim.SetBool("isEating", state);
-                        eatSource.Play();
                         break;
                     case "shake":
                         anim.SetBool("isShaking", state);
-                        shakeSource.Play();
+                        
                         break;
                     case "bark":
                         anim.SetBool("isBarking", state);
-                        barkSource.Play();
+                        
                         break;
                     case "scratch":
                         anim.SetBool("isScratching", state);
@@ -557,7 +556,7 @@ namespace GoogleARCore.Examples.HelloAR
                         break;
                     case "sit":
                         anim.SetBool("isSitting", state);
-                        pantSource.Play();
+                        
                         break;
                     case "walk":
                         anim.SetBool("isWalking", state);
@@ -581,6 +580,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
                         statLifeExpect.transform.localScale -= new Vector3(negLifeexpect, 0f, 0f);
                         setAnim("eat", true);
+                        eatSource.Play();
                         EatParticles.Play();
                         if (infoboxCount[0] < 2)
                         {
@@ -606,6 +606,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
                         statLifeExpect.transform.localScale += new Vector3(posLifeexpect, 0f, 0f);
                         setAnim("eat", true);
+                        eatSource.Play();
                         EatParticles.Play();
                         if (infoboxCount[1] < 2)
                         {
@@ -630,6 +631,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
                         statLifeExpect.transform.localScale -= new Vector3(negLifeexpect, 0f, 0f);
                         setAnim("shake", true);
+                        shakeSource.Play();
                         if (infoboxCount[2] < 2)
                         {
                             ToggleInfoboxShort(HygeineInfoComShort);
@@ -654,6 +656,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
                         statLifeExpect.transform.localScale += new Vector3(posLifeexpect, 0f, 0f);
                         setAnim("shake", true);
+                        shakeSource.Play();
                         if (infoboxCount[3] < 2)
                         {
                             ToggleInfoboxShort(HygeineInfoEcoShort);
@@ -677,6 +680,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(negHappiness, 0f, 0f);
                         statLifeExpect.transform.localScale -= new Vector3(negLifeexpect, 0f, 0f);
                         setAnim("sit", true);
+                        barkSource.Play();
                         if (infoboxCount[4] < 2)
                         {
                             ToggleInfoboxShort(ExerInfoCarShort);
@@ -700,6 +704,7 @@ namespace GoogleARCore.Examples.HelloAR
                         statHappiness.transform.localScale += new Vector3(posHappiness, 0f, 0f);
                         statLifeExpect.transform.localScale += new Vector3(posLifeexpect, 0f, 0f);
                         setAnim("run", true);
+                        pantSource.Play();
                         if (infoboxCount[5] < 2)
                         {
                             ToggleInfoboxShort(ExerInfoWalkShort);
