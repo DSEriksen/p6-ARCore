@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class frontFace : MonoBehaviour
 {
@@ -62,5 +63,9 @@ public class frontFace : MonoBehaviour
         int orient = -frontcam.videoRotationAngle;
         background.rectTransform.localEulerAngles = new Vector3(0, 0, orient);
 
+    }
+
+    public void ChangeScene(){
+        SceneManager.LoadScene("mainscene", LoadSceneMode.Single);
     }
 }

@@ -147,10 +147,12 @@ namespace GoogleARCore.Examples.HelloAR
         public AudioClip scratchClip;
         public AudioSource barkSource, shakeSource, eatSource, pantSource, scratchSource;
 
+        private int dayCount;
+
         public void Start()
         {
             canSpawn = true;
-
+            dayCount = 0;
             //Audio initializations
             barkSource.clip = barkClip;
             shakeSource.clip = shakeClip;
@@ -720,6 +722,12 @@ namespace GoogleARCore.Examples.HelloAR
         public void nextDay()
         {
             nextdayPressed = true;
+            dayCount++;
+
+            if (dayCount == 4){
+                SceneManager.LoadScene("SelfieScene", LoadSceneMode.Additive);
+                dayCount++;
+            }
 
             float lifeScore = 0.08f;
             lifeScore = lifeScore * 10;
