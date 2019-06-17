@@ -486,8 +486,42 @@ namespace GoogleARCore.Examples.HelloAR
                     }
                 }
             }
+
+            
+            //example of optimisation//
+            /*
+            if (animatePane){
+                if (!paneUp){
+                    PaneObject.transform.Translate(new Vector3(0, animSpeed, 0));
+                    CheckPanePosition();
+                }
+                if (paneUp){
+                    PaneObject.transform.translate(new Vector(0, -animSpeed, 0));
+                    CheckPanePosition();
+                }
+            }
+            */
+            
         }
 
+/*
+        public void SwitchPane(GameObject CurrentPaneObject){
+            PaneObject = CurrentPaneObject;
+            AnimatePane = true;
+        }
+
+        private void CheckPanePosition(){
+            if (PaneObject.transform.localPosition >= paneMaxY){
+                paneUp = true;
+                animatePane = false;
+            }
+
+            else if (PaneObject.transform.localPosition <= paneMinY){
+                paneUp = false;
+                animateEPane = false;
+            }
+        }
+*/
         public void SwitchPane(int caseSwitch)
         {
             switch (caseSwitch)

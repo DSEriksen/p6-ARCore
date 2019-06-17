@@ -66,6 +66,7 @@ public class frontFace : MonoBehaviour
     }
 
     public void ChangeScene(){
-        SceneManager.LoadScene("mainscene", LoadSceneMode.Single);
+        SceneManager.UnloadScene("SelfieScene");
+        //SceneManager.LoadScene("mainscene", LoadSceneMode.Single);
     }
 }
