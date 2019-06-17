@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/ARPet/Scenes/StartScene.unity
+    guid: fac1a524d9e2037478d924216bcf3994
+  - enabled: 1
     path: Assets/ARPet/Scenes/mainscene.unity
     guid: e6dfbe4cff18df34faeb94bf13ebd2e6
   - enabled: 1
