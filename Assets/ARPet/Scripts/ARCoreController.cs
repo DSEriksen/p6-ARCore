@@ -489,7 +489,7 @@ namespace GoogleARCore.Examples.HelloAR
 
             
             //example of optimisation//
-            /*
+            /* 
             if (animatePane){
                 if (!paneUp){
                     PaneObject.transform.Translate(new Vector3(0, animSpeed, 0));
@@ -500,11 +500,10 @@ namespace GoogleARCore.Examples.HelloAR
                     CheckPanePosition();
                 }
             }
-            */
+            
             
         }
-
-/*
+        
         public void SwitchPane(GameObject CurrentPaneObject){
             PaneObject = CurrentPaneObject;
             AnimatePane = true;
@@ -520,8 +519,8 @@ namespace GoogleARCore.Examples.HelloAR
                 paneUp = false;
                 animateEPane = false;
             }
-        }
-*/
+        } */
+
         public void SwitchPane(int caseSwitch)
         {
             switch (caseSwitch)
